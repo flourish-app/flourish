@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
@@ -17,6 +17,8 @@ export default function StockBrowserPage() {
   const router = useRouter()
   const [stocks, setStocks]     = useState<SimStock[]>([])
   const [prices, setPrices]     = useState<Prices>({})
+  const [flash,  setFlash]      = useState<Record<string, 'up' | 'down'>>({})
+  const prevPricesRef           = useRef<Prices>({})
   const [search, setSearch]     = useState('')
   const [exchange, setExchange] = useState(ALL)
   const [sector, setSector]     = useState(ALL)
@@ -46,12 +48,31 @@ export default function StockBrowserPage() {
       const { data: pd } = await supabase.functions.invoke('get-prices', {
         body: { tickers: data.map(s => s.ticker) },
       })
-      if (pd?.prices) setPrices(pd.prices)
+      if (pd?.prices) {
+        prevPricesRef.current = pd.prices
+        setPrices(pd.prices)
+      }
     }
 
     load()
     return () => subscription.unsubscribe()
   }, [router])
+
+  const applyPrices = (next: Prices) => {
+    const prev = prevPricesRef.current
+    const newFlash: Record<string, 'up' | 'down'> = {}
+    for (const t of Object.keys(next)) {
+      if (prev[t] && next[t].price !== prev[t].price) {
+        newFlash[t] = next[t].price > prev[t].price ? 'up' : 'down'
+      }
+    }
+    prevPricesRef.current = next
+    setPrices(next)
+    if (Object.keys(newFlash).length) {
+      setFlash(newFlash)
+      setTimeout(() => setFlash({}), 950)
+    }
+  }
 
   // Refresh prices every 30 s
   useEffect(() => {
@@ -60,7 +81,7 @@ export default function StockBrowserPage() {
       const { data } = await supabase.functions.invoke('get-prices', {
         body: { tickers: stocks.map(s => s.ticker) },
       })
-      if (data?.prices) setPrices(data.prices)
+      if (data?.prices) applyPrices(data.prices)
     }, 30_000)
     return () => clearInterval(id)
   }, [stocks])
@@ -151,9 +172,11 @@ export default function StockBrowserPage() {
                     <td><span className="sim-badge">{s.exchange}</span></td>
                     <td className="sim-muted">{s.sector}</td>
                     <td className="sim-col-r">
-                      {p
-                        ? formatPrice(p.price, s.currency)
-                        : <span className="sim-muted">—</span>}
+                      {p ? (
+                        <span className={flash[s.ticker] === 'up' ? 'sim-flash-up' : flash[s.ticker] === 'down' ? 'sim-flash-down' : ''}>
+                          {formatPrice(p.price, s.currency)}
+                        </span>
+                      ) : <span className="sim-muted">—</span>}
                     </td>
                     <td className={`sim-col-r ${p ? (p.change_pct >= 0 ? 'sim-pos' : 'sim-neg') : ''}`}>
                       {p

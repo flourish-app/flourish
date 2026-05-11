@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import {
@@ -48,6 +48,9 @@ export default function TradePage() {
   const [price,     setPrice]     = useState<PriceData | null>(null)
   const [candles,   setCandles]   = useState<Candle[]>([])
 
+  const [priceFlash, setPriceFlash] = useState<'up' | 'down' | null>(null)
+  const prevPriceRef                = useRef<number | null>(null)
+
   const [mode,    setMode]    = useState<'BUY' | 'SELL'>('BUY')
   const [shares,  setShares]  = useState('')
   const [trading, setTrading] = useState(false)
@@ -56,7 +59,17 @@ export default function TradePage() {
 
   const fetchPrice = useCallback(async () => {
     const { data } = await supabase.functions.invoke('get-prices', { body: { tickers: [ticker] } })
-    if (data?.prices?.[ticker]) setPrice(data.prices[ticker])
+    if (data?.prices?.[ticker]) {
+      const next = data.prices[ticker] as PriceData
+      const prev = prevPriceRef.current
+      if (prev !== null && next.price !== prev) {
+        const dir = next.price > prev ? 'up' : 'down'
+        setPriceFlash(dir)
+        setTimeout(() => setPriceFlash(null), 950)
+      }
+      prevPriceRef.current = next.price
+      setPrice(next)
+    }
   }, [ticker])
 
   const fetchHolding = useCallback(async (portfolioId: string) => {
@@ -208,7 +221,9 @@ export default function TradePage() {
 
         {price ? (
           <div className="sim-trade-price">
-            <span className="sim-trade-price__value">{formatPrice(price.price, stock.currency)}</span>
+            <span className={`sim-trade-price__value ${priceFlash === 'up' ? 'sim-flash-up' : priceFlash === 'down' ? 'sim-flash-down' : ''}`}>
+              {formatPrice(price.price, stock.currency)}
+            </span>
             <span className={`sim-trade-price__change ${price.change_pct >= 0 ? 'sim-pos' : 'sim-neg'}`}>
               {price.change >= 0 ? '+' : ''}{formatPrice(Math.abs(price.change), stock.currency)} ({formatChangePct(price.change_pct)}) today
             </span>

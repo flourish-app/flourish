@@ -284,7 +284,7 @@ button { cursor: pointer; font-family: inherit; border: none; }
 
 .paths { padding: 80px 0; background: var(--off-white); }
 .paths__grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 48px; }
-.path-card { background: var(--white); border-radius: 16px; padding: 24px; border: 1.5px solid var(--grey-2); transition: all 0.2s; position: relative; overflow: hidden; }
+.path-card { display: block; text-decoration: none; color: inherit; background: var(--white); border-radius: 16px; padding: 24px; border: 1.5px solid var(--grey-2); transition: all 0.2s; position: relative; overflow: hidden; }
 .path-card:hover { border-color: var(--black); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.06); }
 .path-card--featured { background: var(--black); border-color: var(--black); color: var(--white); }
 .path-card--featured .path-card__body { color: rgba(255,255,255,0.65); }
@@ -299,7 +299,7 @@ button { cursor: pointer; font-family: inherit; border: none; }
 
 .tools { padding: 80px 0; background: var(--white); }
 .tools__grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 48px; }
-.tool-card { display: flex; gap: 16px; align-items: flex-start; padding: 20px; border-radius: 14px; border: 1.5px solid var(--grey-2); transition: all 0.2s; }
+.tool-card { display: flex; gap: 16px; align-items: flex-start; padding: 20px; border-radius: 14px; border: 1.5px solid var(--grey-2); transition: all 0.2s; text-decoration: none; color: inherit; }
 .tool-card:hover { border-color: var(--green); background: var(--green-light); }
 .tool-card__icon { width: 44px; height: 44px; background: var(--grey-1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
 .tool-card__title { font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
@@ -2306,6 +2306,17 @@ button { cursor: pointer; font-family: inherit; border: none; }
 .sim-pos  { color: var(--green); }
 .sim-neg  { color: #c0392b; }
 .sim-muted { color: var(--grey-3); }
+
+@keyframes simFlashUp {
+  0%   { background-color: rgba(39, 174, 96, 0.2); }
+  100% { background-color: transparent; }
+}
+@keyframes simFlashDown {
+  0%   { background-color: rgba(192, 57, 43, 0.2); }
+  100% { background-color: transparent; }
+}
+.sim-flash-up   { animation: simFlashUp   0.9s ease-out; border-radius: 4px; }
+.sim-flash-down { animation: simFlashDown 0.9s ease-out; border-radius: 4px; }
 
 /* Back link */
 .sim-back {

@@ -142,7 +142,7 @@ export default function Home() {
             Structured modules built around what UK students actually need to know - from opening your first ISA to understanding global markets.
           </p>
           <div className="paths__grid">
-            <div className="path-card fade-up path-card--featured">
+            <Link href="/courses/investing-from-scratch" className="path-card fade-up path-card--featured">
               <div className="path-card__tag" style={{ background: 'rgba(76,175,130,0.2)', color: '#4caf82' }}>Most popular</div>
               <div className="path-card__emoji">🚀</div>
               <div className="path-card__title">Investing from scratch</div>
@@ -151,8 +151,8 @@ export default function Home() {
                 <span>📚 8 lessons</span>
                 <span>⏱ ~2 hrs</span>
               </div>
-            </div>
-            <div className="path-card fade-up">
+            </Link>
+            <Link href="/courses/isas-and-tax-free-saving" className="path-card fade-up">
               <div className="path-card__tag">Essentials</div>
               <div className="path-card__emoji">🏦</div>
               <div className="path-card__title">ISAs &amp; Tax-free saving</div>
@@ -161,8 +161,8 @@ export default function Home() {
                 <span>📚 6 lessons</span>
                 <span>⏱ ~90 min</span>
               </div>
-            </div>
-            <div className="path-card fade-up">
+            </Link>
+            <Link href="/courses/stocks-etfs-and-funds" className="path-card fade-up">
               <div className="path-card__tag">Intermediate</div>
               <div className="path-card__emoji">📊</div>
               <div className="path-card__title">Stocks, ETFs &amp; Funds</div>
@@ -171,8 +171,8 @@ export default function Home() {
                 <span>📚 10 lessons</span>
                 <span>⏱ ~3 hrs</span>
               </div>
-            </div>
-            <div className="path-card fade-up">
+            </Link>
+            <Link href="/courses/pensions-and-your-future" className="path-card fade-up">
               <div className="path-card__tag">Long-term</div>
               <div className="path-card__emoji">🔮</div>
               <div className="path-card__title">Pensions &amp; your future</div>
@@ -181,8 +181,8 @@ export default function Home() {
                 <span>📚 5 lessons</span>
                 <span>⏱ ~60 min</span>
               </div>
-            </div>
-            <div className="path-card fade-up">
+            </Link>
+            <Link href="/courses" className="path-card fade-up">
               <div className="path-card__tag">Practical</div>
               <div className="path-card__emoji">🧮</div>
               <div className="path-card__title">Budgeting on a student income</div>
@@ -191,8 +191,8 @@ export default function Home() {
                 <span>📚 7 lessons</span>
                 <span>⏱ ~2 hrs</span>
               </div>
-            </div>
-            <div className="path-card fade-up">
+            </Link>
+            <Link href="/courses" className="path-card fade-up">
               <div className="path-card__tag">Advanced</div>
               <div className="path-card__emoji">🌍</div>
               <div className="path-card__title">Understanding markets</div>
@@ -201,7 +201,7 @@ export default function Home() {
                 <span>📚 9 lessons</span>
                 <span>⏱ ~2.5 hrs</span>
               </div>
-            </div>
+            </Link>
           </div>
         </div>
       </section>
@@ -216,22 +216,22 @@ export default function Home() {
           </p>
           <div className="tools__grid">
             {[
-              { icon: '📈', title: 'Compound interest calculator', body: 'See how £50/month grows over 10, 20, 40 years - the numbers will surprise you.' },
-              { icon: '🏦', title: 'ISA allowance tracker', body: 'Track your £20,000 annual ISA allowance across different account types in real time.' },
-              { icon: '⚖️', title: 'Risk profiler', body: 'Answer 5 quick questions to understand what investment risk level suits your goals and timeline.' },
-              { icon: '🎯', title: 'Savings goal planner', body: 'Set a target - house deposit, travel fund, emergency pot - and build a weekly plan to get there.' },
-              { icon: '💸', title: 'Fees comparison tool', body: 'Compare the real long-term cost of platform fees across popular UK investment apps.' },
-              { icon: '🧾', title: 'Student budget template', body: "A simple monthly budget built around a student's income sources - loan, part-time work, and parental support." },
-              { icon: '🏠', title: 'LISA calculator', body: 'Work out how the Lifetime ISA 25% government bonus helps you buy your first home faster.' },
-              { icon: '📅', title: 'Pension projection tool', body: 'Enter your age and monthly contribution to see your projected pension pot at retirement.' },
+              { icon: '📈', title: 'Compound interest calculator', body: 'See how £50/month grows over 10, 20, 40 years - the numbers will surprise you.',                                                      href: '/tools/compound-calculator' },
+              { icon: '🏦', title: 'ISA allowance tracker',         body: 'Track your £20,000 annual ISA allowance across different account types in real time.',                                                href: '/tools/isa-tracker' },
+              { icon: '⚖️', title: 'Risk profiler',                 body: 'Answer 5 quick questions to understand what investment risk level suits your goals and timeline.',                                    href: '/tools/risk-profiler' },
+              { icon: '🎯', title: 'Savings goal planner',          body: 'Set a target - house deposit, travel fund, emergency pot - and build a weekly plan to get there.',                                    href: '/tools' },
+              { icon: '💸', title: 'Fees comparison tool',          body: 'Compare the real long-term cost of platform fees across popular UK investment apps.',                                                  href: '/tools' },
+              { icon: '🧾', title: 'Student budget template',       body: "A simple monthly budget built around a student's income sources - loan, part-time work, and parental support.",                       href: '/tools' },
+              { icon: '🏠', title: 'LISA calculator',               body: 'Work out how the Lifetime ISA 25% government bonus helps you buy your first home faster.',                                            href: '/tools/lisa-calculator' },
+              { icon: '📅', title: 'Pension projection tool',       body: 'Enter your age and monthly contribution to see your projected pension pot at retirement.',                                             href: '/tools' },
             ].map((tool) => (
-              <div className="tool-card fade-up" key={tool.title}>
+              <Link className="tool-card fade-up" key={tool.title} href={tool.href}>
                 <div className="tool-card__icon">{tool.icon}</div>
                 <div>
                   <div className="tool-card__title">{tool.title}</div>
                   <p className="tool-card__body">{tool.body}</p>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -343,7 +343,7 @@ export default function Home() {
           </p>
           <div className="cta-banner__actions fade-up">
             <StartLearningCTA className="btn btn--white btn--lg" />
-            <a href="#learn" className="btn btn--ghost-white btn--lg">Browse courses</a>
+            <Link href="/courses" className="btn btn--ghost-white btn--lg">Browse courses</Link>
           </div>
         </div>
       </section>
