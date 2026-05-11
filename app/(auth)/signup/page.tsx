@@ -2,10 +2,13 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { supabase } from '@/lib/supabase'
 
 const AGE_RANGES = ['Under 18', '18–21', '22–25', '26–30', '31+']
 
 export default function SignupPage() {
+  const router = useRouter()
   const [step, setStep] = useState<1 | 2>(1)
 
   // Step 1
@@ -52,12 +55,13 @@ export default function SignupPage() {
     })
     if (signUpError) { setError(signUpError.message); return }
     if (!data.user)  { setError('Something went wrong. Please try again.'); return }
+    if (!data.session) { setEmailSent(true); return }
+    // Session exists (email confirmation disabled) — write full profile
     await supabase.from('profiles').upsert({
       id: data.user.id, email, first_name: firstName,
       age_range: ageRange, university: notInHE ? null : university,
       course: notInHE ? null : course, not_in_he: notInHE,
     })
-    if (!data.session) { setEmailSent(true); return }
     router.push('/dashboard')
   } catch (err) {
     setError(err instanceof Error ? err.message : 'Something went wrong.')
@@ -83,7 +87,7 @@ export default function SignupPage() {
       </div>
 
       {/* ── Step 1: Name & age ── */}
-      {step === 1 && (
+      {!emailSent && step === 1 && (
         <>
           <div className="auth-card__header">
             <h1 className="auth-card__headline">
@@ -180,8 +184,20 @@ export default function SignupPage() {
         </>
       )}
 
+      {/* ── Email confirmation screen ── */}
+      {emailSent && (
+        <div className="auth-card__header" style={{ textAlign: 'center', padding: '24px 0' }}>
+          <h1 className="auth-card__headline">Check your inbox 📬</h1>
+          <p className="auth-card__sub">
+            We sent a confirmation link to <strong>{email}</strong>.<br />
+            Click it to activate your account, then{' '}
+            <Link href="/login">sign in</Link>.
+          </p>
+        </div>
+      )}
+
       {/* ── Step 2: Email & password ── */}
-      {step === 2 && (
+      {!emailSent && step === 2 && (
         <>
           <div className="auth-card__header">
             <h1 className="auth-card__headline">

@@ -1,12 +1,24 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { supabase } from '@/lib/supabase'
 
 export default function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [isSignedIn, setIsSignedIn] = useState(false)
   const pathname = usePathname()
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsSignedIn(!!session)
+    })
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsSignedIn(!!session)
+    })
+    return () => subscription.unsubscribe()
+  }, [])
 
   return (
     <header className="nav">
@@ -53,8 +65,14 @@ export default function Nav() {
         </nav>
 
         <div className="nav__actions">
-          <Link href="/login" className="btn btn--outline">Log in</Link>
-          <Link href="/start-learning" className="btn btn--primary">Start learning</Link>
+          {isSignedIn ? (
+            <Link href="/dashboard" className="btn btn--primary">Dashboard</Link>
+          ) : (
+            <>
+              <Link href="/login" className="btn btn--outline">Log in</Link>
+              <Link href="/start-learning" className="btn btn--primary">Start learning</Link>
+            </>
+          )}
           <button
             className="nav__hamburger"
             aria-label="Open menu"
@@ -80,8 +98,14 @@ export default function Nav() {
         <Link href="/tools" style={{ paddingLeft: '12px' }} onClick={() => setMobileOpen(false)}>All tools</Link>
         <Link href="/courses" onClick={() => setMobileOpen(false)}>All courses</Link>
         <Link href="/simulator" onClick={() => setMobileOpen(false)}>Simulator</Link>
-        <Link href="/login" className="btn btn--outline" onClick={() => setMobileOpen(false)}>Log in</Link>
-        <Link href="/start-learning" className="btn btn--primary" onClick={() => setMobileOpen(false)}>Start learning free</Link>
+        {isSignedIn ? (
+          <Link href="/dashboard" className="btn btn--primary" onClick={() => setMobileOpen(false)}>Dashboard</Link>
+        ) : (
+          <>
+            <Link href="/login" className="btn btn--outline" onClick={() => setMobileOpen(false)}>Log in</Link>
+            <Link href="/start-learning" className="btn btn--primary" onClick={() => setMobileOpen(false)}>Start learning free</Link>
+          </>
+        )}
       </div>
     </header>
   )

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import ScrollAnimations from '@/components/ScrollAnimations'
+import { StartLearningCTA } from '@/components/StartLearningCTA'
 
 export default function Home() {
   return (
@@ -21,7 +22,7 @@ export default function Home() {
               Learn ISAs, ETFs, index funds and more through bite-sized lessons, live simulations and real tools - completely free.
             </p>
             <div className="hero__cta">
-              <Link href="/start-learning" className="btn btn--primary btn--lg">Start learning free</Link>
+              <StartLearningCTA className="btn btn--primary btn--lg" />
               <a href="#learn" className="btn btn--outline btn--lg">Browse courses</a>
             </div>
             <p className="hero__disclaimer">
@@ -341,7 +342,7 @@ export default function Home() {
             Every year you wait costs you more than you think. It takes 20 minutes to learn something that could change your financial life.
           </p>
           <div className="cta-banner__actions fade-up">
-            <Link href="/start-learning" className="btn btn--white btn--lg">Start learning free</Link>
+            <StartLearningCTA className="btn btn--white btn--lg" />
             <a href="#learn" className="btn btn--ghost-white btn--lg">Browse courses</a>
           </div>
         </div>

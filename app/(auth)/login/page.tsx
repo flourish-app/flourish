@@ -1,20 +1,39 @@
 'use client'
 
-import type { Metadata } from 'next'
 import Link from 'next/link'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { supabase } from '@/lib/supabase'
 
 export default function LoginPage() {
+  const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [rememberMe, setRememberMe] = useState(true)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    // Backend integration goes here
-    setTimeout(() => setLoading(false), 1200)
+    setError('')
+    try {
+      const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
+      if (signInError) { setError(signInError.message); return }
+      if (rememberMe) {
+        localStorage.setItem('fl_remember', '1')
+      } else {
+        localStorage.setItem('fl_remember', '0')
+        // Session cookie — no max-age means browser clears it when closed
+        document.cookie = 'fl_sess=1; path=/; SameSite=Strict'
+      }
+      router.push('/dashboard')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -66,6 +85,18 @@ export default function LoginPage() {
             </button>
           </div>
         </div>
+
+        <label className="form-checkbox-label">
+          <input
+            type="checkbox"
+            className="form-checkbox"
+            checked={rememberMe}
+            onChange={e => setRememberMe(e.target.checked)}
+          />
+          <span>Remember me</span>
+        </label>
+
+        {error && <p className="auth-error">{error}</p>}
 
         <button
           type="submit"
