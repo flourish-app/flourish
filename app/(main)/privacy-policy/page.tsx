@@ -279,7 +279,8 @@ export default function PrivacyPolicyPage() {
           <div id="section-12" className="legal-section">
             <h2 className="legal-h2">12. How Can You Contact Us About This Notice?</h2>
             <p className="legal-body">
-              If you have questions or comments about this notice, you may email us at <a href="mailto:privacy@getflourish.co.uk">privacy@getflourish.co.uk</a> 
+              If you have questions or comments about this notice, you may email us at <a href="mailto:privacy@getflourish.co.uk">privacy@getflourish.co.uk</a>
+              </p>
             </div>
             <p className="legal-body" style={{ marginTop: '20px' }}>
               If you are a resident in the United Kingdom, we are the &apos;data controller&apos; of your personal information. We have appointed Niall Binnion to be our representative in the UK. You can contact them directly regarding our processing of your information, by email at <a href="mailto:privacy@getflourish.co.uk">privacy@getflourish.co.uk</a>
