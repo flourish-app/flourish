@@ -35,7 +35,7 @@ const features = [
   {
     icon: '🏆',
     title: 'Weekly challenges',
-    body: 'Coming soon. Compete with other students on themed weekly challenges. Build the best portfolio, climb the leaderboard.',
+    body: 'Compete with other students on themed weekly challenges. Build the best portfolio, climb the leaderboard.',
   },
 ]
 
@@ -87,7 +87,7 @@ export default function SimulatorPage() {
             <div className="simpage-hero__copy">
               <div className="simpage-hero__badge">
                 <span className="simpage-hero__badge-dot" />
-                Coming soon — get early access
+                Now live — free to use
               </div>
               <h1 className="simpage-hero__headline">
                 Invest without<br />the risk
@@ -98,7 +98,7 @@ export default function SimulatorPage() {
               </p>
               <div className="simpage-hero__cta">
                 <Link href="/start-learning" className="btn btn--green btn--lg">
-                  Get early access
+                  Start trading free
                 </Link>
                 <a href="#how-it-works" className="btn btn--ghost-white btn--lg">
                   How it works
@@ -314,11 +314,11 @@ export default function SimulatorPage() {
         <div className="container">
           <h2 className="cta-banner__headline">Start practising before it counts</h2>
           <p className="cta-banner__sub">
-            Create a free account and be first in line when the simulator launches.
+            Create a free account and start investing with £10,000 of virtual cash today.
           </p>
           <div className="cta-banner__actions">
             <Link href="/start-learning" className="btn btn--white btn--lg">
-              Get early access
+              Start trading free
             </Link>
             <Link href="/courses" className="btn btn--ghost-white btn--lg">
               Browse courses

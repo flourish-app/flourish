@@ -60,7 +60,7 @@ export default function PensionsCoursePage() {
               <div className="course-hero__meta">
                 <span className="course-tag">Long-term</span>
                 <span className="course-meta-item">📚 5 lessons</span>
-                <span className="course-meta-item">⏱ ~60 min</span>
+                <span className="course-meta-item">⏱ ~55 mins</span>
                 <span className="course-meta-item">🎯 All levels</span>
               </div>
 

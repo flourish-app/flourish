@@ -57,7 +57,7 @@ export default function InvestingFromScratchPage() {
               <div className="course-hero__meta">
                 <span className="course-tag course-tag--featured">Most popular</span>
                 <span className="course-meta-item">📚 8 lessons</span>
-                <span className="course-meta-item">⏱ ~2 hrs</span>
+                <span className="course-meta-item">⏱ ~65 mins</span>
                 <span className="course-meta-item">🎯 Beginner</span>
               </div>
 

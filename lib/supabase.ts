@@ -25,4 +25,5 @@ export type Profile = {
   course: string | null
   not_in_he: boolean
   created_at: string
+  total_xp: number
 }

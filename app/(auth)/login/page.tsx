@@ -1,18 +1,24 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [rememberMe, setRememberMe] = useState(true)
+  const [successMsg, setSuccessMsg] = useState('')
+
+  useEffect(() => {
+    if (searchParams.get('reset') === '1') setSuccessMsg('Password updated — sign in with your new password.')
+  }, [searchParams])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -62,7 +68,7 @@ export default function LoginPage() {
         <div className="form-group">
           <div className="form-label-row">
             <label className="form-label" htmlFor="password">Password</label>
-            <a href="#" className="form-label-link">Forgot password?</a>
+            <Link href="/forgot-password" className="form-label-link">Forgot password?</Link>
           </div>
           <div className="form-input-wrap">
             <input
@@ -96,6 +102,7 @@ export default function LoginPage() {
           <span>Remember me</span>
         </label>
 
+        {successMsg && <p className="auth-success">{successMsg}</p>}
         {error && <p className="auth-error">{error}</p>}
 
         <button

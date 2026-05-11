@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import ThemeToggle from '@/components/ThemeToggle'
+import SoundToggle from '@/components/SoundToggle'
 
 const NAV: { section?: string; items: { href: string; label: string }[] }[] = [
   {
@@ -82,7 +83,10 @@ function SidebarContent({ onNav }: { onNav?: () => void }) {
 
       <div className="sidebar__footer">
         <div className="sidebar__footer-row">
-          <ThemeToggle />
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <ThemeToggle />
+            <SoundToggle />
+          </div>
           <button className="sidebar__signout" onClick={handleSignOut}>
             Sign out
           </button>

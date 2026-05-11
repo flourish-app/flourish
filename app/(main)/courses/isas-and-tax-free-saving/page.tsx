@@ -36,7 +36,7 @@ export default function IsasCoursePage() {
               <div className="course-hero__meta">
                 <span className="course-tag">Essentials</span>
                 <span className="course-meta-item">📚 6 lessons</span>
-                <span className="course-meta-item">⏱ ~90 min</span>
+                <span className="course-meta-item">⏱ ~50 mins</span>
                 <span className="course-meta-item">🎯 Beginner</span>
               </div>
 

@@ -1,20 +1,13 @@
-import type { Metadata } from 'next'
+'use client'
+
+import { useEffect, useState, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { supabase } from '@/lib/supabase'
+import { lessons } from '@/lib/lessons/investing-from-scratch'
 
-export const metadata: Metadata = {
-  title: 'Investing from Scratch — Flourish',
-}
-
-const lessons = [
-  { num: 1,  title: 'What is investing — and what it isn\'t',                        duration: '5 min'  },
-  { num: 2,  title: 'Why your money loses value sitting still',                        duration: '7 min'  },
-  { num: 3,  title: 'Risk and return — the relationship that drives everything',       duration: '8 min'  },
-  { num: 4,  title: 'Compound interest — and why starting early changes everything',   duration: '10 min' },
-  { num: 5,  title: 'Saving vs investing — when to do which',                         duration: '6 min'  },
-  { num: 6,  title: 'Stocks, bonds, funds and ETFs — what they actually are',          duration: '12 min' },
-  { num: 7,  title: 'How to think about your first investment',                        duration: '9 min'  },
-  { num: 8,  title: 'Your next steps — getting started in the UK',                    duration: '8 min'  },
-]
+const COURSE_SLUG = 'investing-from-scratch'
+const TOTAL = lessons.length
 
 const outcomes = [
   'Understand what investing actually is — in plain, jargon-free English',
@@ -45,6 +38,54 @@ const faqs = [
 ]
 
 export default function InvestingFromScratchDashboardPage() {
+  const router = useRouter()
+  const [completedSlugs, setCompletedSlugs] = useState<Set<string>>(new Set())
+  const [loaded, setLoaded] = useState(false)
+  const [retaking, setRetaking] = useState(false)
+
+  const loadCompletions = useCallback(async () => {
+    const { data } = await supabase
+      .from('lesson_completions')
+      .select('lesson_slug')
+      .eq('course_slug', COURSE_SLUG)
+    setCompletedSlugs(new Set((data ?? []).map(r => r.lesson_slug)))
+    setLoaded(true)
+  }, [])
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_OUT') router.replace('/login')
+    })
+    supabase.auth.getSession().then(({ data: { session }, error }) => {
+      if (error || !session) {
+        supabase.auth.signOut()
+        router.replace('/login')
+        return
+      }
+      loadCompletions()
+    })
+    return () => subscription.unsubscribe()
+  }, [router, loadCompletions])
+
+  async function retakeCourse() {
+    setRetaking(true)
+    await supabase
+      .from('lesson_completions')
+      .delete()
+      .eq('course_slug', COURSE_SLUG)
+    router.push(`/dashboard/courses/${COURSE_SLUG}/lesson-1`)
+  }
+
+  const completedCount = completedSlugs.size
+  const allDone = completedCount === TOTAL
+  const fillPct = TOTAL > 0 ? Math.round((completedCount / TOTAL) * 100) : 0
+
+  // First lesson that hasn't been completed yet
+  const nextLesson = lessons.find(l => !completedSlugs.has(l.slug)) ?? lessons[0]
+
+  const ctaHref = `/dashboard/courses/${COURSE_SLUG}/${nextLesson.slug}`
+  const ctaLabel = completedCount === 0 ? 'Start course' : 'Continue course'
+
   return (
     <div className="course-page">
 
@@ -56,7 +97,7 @@ export default function InvestingFromScratchDashboardPage() {
               <div className="course-hero__meta">
                 <span className="course-tag course-tag--featured">Most popular</span>
                 <span className="course-meta-item">📚 8 lessons</span>
-                <span className="course-meta-item">⏱ ~2 hrs</span>
+                <span className="course-meta-item">⏱ ~65 mins</span>
                 <span className="course-meta-item">🎯 Beginner</span>
               </div>
 
@@ -78,15 +119,33 @@ export default function InvestingFromScratchDashboardPage() {
               <div className="course-signup-card__progress">
                 <div className="course-signup-card__progress-label">
                   <span>Your progress</span>
-                  <span>0 / 8 lessons</span>
+                  <span>{loaded ? `${completedCount} / ${TOTAL} lessons` : `— / ${TOTAL} lessons`}</span>
                 </div>
                 <div className="course-signup-card__progress-bar">
-                  <div className="course-signup-card__progress-fill" />
+                  <div
+                    className="course-signup-card__progress-fill"
+                    style={{ width: loaded ? `${fillPct}%` : '0%' }}
+                  />
                 </div>
               </div>
-              <button className="btn btn--primary btn--lg course-signup-card__cta">
-                Start course
-              </button>
+
+              {allDone ? (
+                <button
+                  className="btn btn--outline btn--lg course-signup-card__cta"
+                  onClick={retakeCourse}
+                  disabled={retaking}
+                >
+                  {retaking ? 'Resetting...' : 'Retake course'}
+                </button>
+              ) : (
+                <Link
+                  href={ctaHref}
+                  className="btn btn--primary btn--lg course-signup-card__cta"
+                >
+                  {ctaLabel}
+                </Link>
+              )}
+
               <ul className="course-signup-card__perks">
                 <li>✓ All lessons unlocked</li>
                 <li>✓ Learn at your own pace</li>
@@ -150,18 +209,29 @@ export default function InvestingFromScratchDashboardPage() {
               <h2 className="course-section__title">Course curriculum</h2>
               <p className="course-section__sub">8 lessons · all unlocked</p>
               <div className="course-curriculum">
-                {lessons.map((lesson) => (
-                  <div key={lesson.num} className="course-lesson course-lesson--free">
-                    <div className="course-lesson__num">{lesson.num}</div>
-                    <div className="course-lesson__info">
-                      <div className="course-lesson__title">{lesson.title}</div>
-                      <div className="course-lesson__duration">{lesson.duration} read</div>
-                    </div>
-                    <div className="course-lesson__status">
-                      <span className="course-lesson__preview">Start</span>
-                    </div>
-                  </div>
-                ))}
+                {lessons.map((lesson) => {
+                  const done = completedSlugs.has(lesson.slug)
+                  return (
+                    <Link
+                      key={lesson.num}
+                      href={`/dashboard/courses/${COURSE_SLUG}/${lesson.slug}`}
+                      className={`course-lesson course-lesson--free${done ? ' course-lesson--completed' : ''}`}
+                    >
+                      <div className="course-lesson__num">
+                        {done ? <span className="course-lesson__check">✓</span> : lesson.num}
+                      </div>
+                      <div className="course-lesson__info">
+                        <div className="course-lesson__title">{lesson.title}</div>
+                        <div className="course-lesson__duration">{lesson.duration} read</div>
+                      </div>
+                      <div className="course-lesson__status">
+                        <span className="course-lesson__preview">
+                          {done ? 'Review' : 'Start →'}
+                        </span>
+                      </div>
+                    </Link>
+                  )
+                })}
               </div>
             </div>
 

@@ -58,7 +58,7 @@ export default function StocksEtfsDashboardPage() {
               <div className="course-hero__meta">
                 <span className="course-tag">Intermediate</span>
                 <span className="course-meta-item">📚 10 lessons</span>
-                <span className="course-meta-item">⏱ ~3 hrs</span>
+                <span className="course-meta-item">⏱ ~90 mins</span>
                 <span className="course-meta-item">📈 Some basics helpful</span>
               </div>
 

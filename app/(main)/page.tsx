@@ -115,19 +115,19 @@ export default function Home() {
               <div className="how-card__thought">&quot;This stuff always goes over my head&quot;</div>
               <div className="how-card__icon">🧩</div>
               <div className="how-card__title">10-minute lessons that actually land</div>
-              <p className="how-card__body">No textbooks. No hour-long lectures. Each lesson is short, plain-English, and designed so you leave actually understanding something - not just feeling like you should.</p>
+              <p className="how-card__body">No textbooks. No hour-long lectures. Each lesson is short, plain-English, and designed so you leave actually understanding something.</p>
             </div>
             <div className="how-card fade-up">
               <div className="how-card__thought">&quot;What if I make the wrong decision?&quot;</div>
               <div className="how-card__icon">🛡️</div>
               <div className="how-card__title">Make every mistake before it matters</div>
-              <p className="how-card__body">Practice with a virtual £10,000 in real markets before you touch a penny of your own. There&apos;s nothing to lose - and that&apos;s exactly the point.</p>
+              <p className="how-card__body">Practice with a virtual £10,000 in real markets before you touch a penny of your own. There&apos;s nothing to lose, and that&apos;s exactly the point.</p>
             </div>
             <div className="how-card fade-up">
               <div className="how-card__thought">&quot;I&apos;ll sort my finances when I&apos;m older&quot;</div>
               <div className="how-card__icon">⏳</div>
               <div className="how-card__title">Starting now beats starting big later</div>
-              <p className="how-card__body">£20 a month from age 20 is worth more than £200 a month from age 35. Flourish makes it easy to start small, today - because waiting is the only real mistake.</p>
+              <p className="how-card__body">£20 a month from age 20 is worth more than £200 a month from age 35. Flourish makes it easy to start small, today, because waiting is the only real mistake.</p>
             </div>
           </div>
         </div>
@@ -149,7 +149,7 @@ export default function Home() {
               <p className="path-card__body">The complete beginner&apos;s guide. What investing actually is, why it beats savings accounts, and how to start with as little as £1.</p>
               <div className="path-card__meta">
                 <span>📚 8 lessons</span>
-                <span>⏱ ~2 hrs</span>
+                <span>⏱ ~65 mins</span>
               </div>
             </Link>
             <Link href="/courses/isas-and-tax-free-saving" className="path-card fade-up">
@@ -159,7 +159,7 @@ export default function Home() {
               <p className="path-card__body">Cash ISA, Stocks &amp; Shares ISA, Lifetime ISA - know the difference and use your £20k annual allowance wisely.</p>
               <div className="path-card__meta">
                 <span>📚 6 lessons</span>
-                <span>⏱ ~90 min</span>
+                <span>⏱ ~50 mins</span>
               </div>
             </Link>
             <Link href="/courses/stocks-etfs-and-funds" className="path-card fade-up">
@@ -169,7 +169,7 @@ export default function Home() {
               <p className="path-card__body">Understand the difference between individual stocks, index funds, and ETFs - and which strategy is right for a student budget.</p>
               <div className="path-card__meta">
                 <span>📚 10 lessons</span>
-                <span>⏱ ~3 hrs</span>
+                <span>⏱ ~90 mins</span>
               </div>
             </Link>
             <Link href="/courses/pensions-and-your-future" className="path-card fade-up">
@@ -179,7 +179,7 @@ export default function Home() {
               <p className="path-card__body">Why pensions matter even at 19, how workplace auto-enrolment works, and why time is your greatest financial asset.</p>
               <div className="path-card__meta">
                 <span>📚 5 lessons</span>
-                <span>⏱ ~60 min</span>
+                <span>⏱ ~55 mins</span>
               </div>
             </Link>
             <Link href="/courses" className="path-card fade-up">
