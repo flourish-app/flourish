@@ -9,8 +9,11 @@ export default function SignupPage() {
   const [step, setStep] = useState<1 | 2>(1)
 
   // Step 1
-  const [name, setName]         = useState('')
-  const [ageRange, setAgeRange] = useState('')
+  const [name, setName]           = useState('')
+  const [ageRange, setAgeRange]   = useState('')
+  const [university, setUniversity] = useState('')
+  const [course, setCourse]       = useState('')
+  const [notInHE, setNotInHE]     = useState(false)
 
   // Step 2
   const [email, setEmail]               = useState('')
@@ -39,7 +42,7 @@ export default function SignupPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    // Backend integration goes here: { name, ageRange, email, password }
+    // Backend integration goes here: { name, ageRange, university, course, notInHE, email, password }
     setTimeout(() => setLoading(false), 1200)
   }
 
@@ -63,7 +66,9 @@ export default function SignupPage() {
       {step === 1 && (
         <>
           <div className="auth-card__header">
-            <h1 className="auth-card__headline">Nice to meet you 👋</h1>
+            <h1 className="auth-card__headline">
+              Nice to meet you{firstName ? `, ${firstName}` : ''} 👋
+            </h1>
             <p className="auth-card__sub">Tell us a little about yourself to get started.</p>
           </div>
 
@@ -98,6 +103,47 @@ export default function SignupPage() {
                 ))}
               </div>
             </div>
+
+            {!notInHE && (
+              <>
+                <div className="form-group">
+                  <label className="form-label" htmlFor="university">University</label>
+                  <input
+                    id="university"
+                    type="text"
+                    className="form-input"
+                    placeholder="e.g. University of Manchester"
+                    value={university}
+                    onChange={e => setUniversity(e.target.value)}
+                    autoComplete="organization"
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label" htmlFor="course">Course</label>
+                  <input
+                    id="course"
+                    type="text"
+                    className="form-input"
+                    placeholder="e.g. Economics"
+                    value={course}
+                    onChange={e => setCourse(e.target.value)}
+                  />
+                </div>
+              </>
+            )}
+
+            <label className="form-checkbox-label">
+              <input
+                type="checkbox"
+                className="form-checkbox"
+                checked={notInHE}
+                onChange={e => {
+                  setNotInHE(e.target.checked)
+                  if (e.target.checked) { setUniversity(''); setCourse('') }
+                }}
+              />
+              <span>I&apos;m not currently in higher education</span>
+            </label>
 
             <button
               type="submit"

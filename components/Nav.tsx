@@ -12,8 +12,7 @@ export default function Nav() {
     <header className="nav">
       <div className="nav__inner">
         <Link href="/" className="nav__logo">
-          <span className="nav__logo-icon">F</span>
-          Flourish
+          <img src="/logo.PNG" alt="Flourish" style={{ height: '32px', width: 'auto' }} />
         </Link>
 
         <nav aria-label="Main navigation">

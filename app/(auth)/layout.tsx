@@ -10,8 +10,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
     <div className="auth-shell">
       <div className="auth-shell__nav">
         <Link href="/" className="auth-shell__logo">
-          <span className="auth-shell__logo-icon">F</span>
-          Flourish
+          <img src="/logo.PNG" alt="Flourish" style={{ height: '30px', width: 'auto' }} />
         </Link>
       </div>
       <main className="auth-shell__main">

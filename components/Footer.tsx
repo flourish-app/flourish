@@ -5,8 +5,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="container">
         <div className="footer__logo">
-          <span className="footer__logo-icon">F</span>
-          Flourish
+          <img src="/logo.PNG" alt="Flourish" style={{ height: '28px', width: 'auto' }} />
         </div>
         <p className="footer__tagline">
           Free investing education for UK students. No real money, no hidden costs, no jargon.
