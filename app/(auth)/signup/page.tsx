@@ -39,12 +39,30 @@ export default function SignupPage() {
     setStep(2)
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    // Backend integration goes here: { name, ageRange, university, course, notInHE, email, password }
-    setTimeout(() => setLoading(false), 1200)
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
+  setLoading(true)
+  setError('')
+  try {
+    const firstName = name.trim().split(' ')[0]
+    const { data, error: signUpError } = await supabase.auth.signUp({
+      email, password, options: { data: { first_name: firstName } },
+    })
+    if (signUpError) { setError(signUpError.message); return }
+    if (!data.user)  { setError('Something went wrong. Please try again.'); return }
+    await supabase.from('profiles').upsert({
+      id: data.user.id, email, first_name: firstName,
+      age_range: ageRange, university: notInHE ? null : university,
+      course: notInHE ? null : course, not_in_he: notInHE,
+    })
+    if (!data.session) { setEmailSent(true); return }
+    router.push('/dashboard')
+  } catch (err) {
+    setError(err instanceof Error ? err.message : 'Something went wrong.')
+  } finally {
+    setLoading(false)
   }
+}
 
   const firstName = name.trim().split(' ')[0]
 
