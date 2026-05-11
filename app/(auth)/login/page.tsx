@@ -1,11 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [email, setEmail] = useState('')
@@ -31,7 +31,6 @@ export default function LoginPage() {
         localStorage.setItem('fl_remember', '1')
       } else {
         localStorage.setItem('fl_remember', '0')
-        // Session cookie — no max-age means browser clears it when closed
         document.cookie = 'fl_sess=1; path=/; SameSite=Strict'
       }
       router.push('/dashboard')
@@ -126,5 +125,13 @@ export default function LoginPage() {
         Create a free account
       </Link>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   )
 }
