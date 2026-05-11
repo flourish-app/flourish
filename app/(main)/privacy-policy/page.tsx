@@ -15,11 +15,11 @@ export default function PrivacyPolicyPage() {
           <p className="legal-updated">Last updated May 10, 2026</p>
 
           <p className="legal-body">
-            This Privacy Notice for Flourish Interactive Limited (doing business as Flourish) (&apos;we&apos;, &apos;us&apos;, or &apos;our&apos;), describes how and why we might access, collect, store, use, and/or share (&apos;process&apos;) your personal information when you use our services (&apos;Services&apos;), including when you:
+            This Privacy Notice for Flourish (&apos;we&apos;, &apos;us&apos;, or &apos;our&apos;), describes how and why we might access, collect, store, use, and/or share (&apos;process&apos;) your personal information when you use our services (&apos;Services&apos;), including when you:
           </p>
           <ul className="legal-list">
             <li>Visit our website at <a href="http://www.getflourish.co.uk">http://www.getflourish.co.uk</a> or any website of ours that links to this Privacy Notice</li>
-            <li>Use Flourish. Free investing education for UK students. No real money, no hidden costs, no jargon. Flourish is an educational platform only. We do not provide financial advice. No real money is involved in simulations. All investment decisions should be made based on your own research or advice from a qualified FCA-regulated adviser. Capital at risk.</li>
+            <li>Use Flourish. Flourish is a free investing education platform for UK students. Educational platform only. We do not provide financial advice. No real money is involved in simulations. All investment decisions should be made based on your own research or advice from a qualified FCA-regulated adviser. Capital at risk.</li>
             <li>Engage with us in other related ways, including any marketing or events</li>
           </ul>
 
@@ -89,6 +89,8 @@ export default function PrivacyPolicyPage() {
               <li>passwords</li>
               <li>contact preferences</li>
               <li>age range</li>
+              <li>university attended</li>
+              <li>degree studied</li>
             </ul>
 
             <p className="legal-body">
@@ -277,24 +279,11 @@ export default function PrivacyPolicyPage() {
           <div id="section-12" className="legal-section">
             <h2 className="legal-h2">12. How Can You Contact Us About This Notice?</h2>
             <p className="legal-body">
-              If you have questions or comments about this notice, you may email us at <a href="mailto:privacy@getflourish.co.uk">privacy@getflourish.co.uk</a> or contact us by post at:
-            </p>
-            <div className="legal-address">
-              <p>Flourish Interactive Limited</p>
-              <p>167-169 Great Portland Street</p>
-              <p>5th Floor</p>
-              <p>London W1W 5PF</p>
-              <p>England</p>
+              If you have questions or comments about this notice, you may email us at <a href="mailto:privacy@getflourish.co.uk">privacy@getflourish.co.uk</a> 
             </div>
             <p className="legal-body" style={{ marginTop: '20px' }}>
-              If you are a resident in the United Kingdom, we are the &apos;data controller&apos; of your personal information. We have appointed Niall Binnion to be our representative in the UK. You can contact them directly regarding our processing of your information, by email at <a href="mailto:privacy@getflourish.co.uk">privacy@getflourish.co.uk</a>, or by post to:
+              If you are a resident in the United Kingdom, we are the &apos;data controller&apos; of your personal information. We have appointed Niall Binnion to be our representative in the UK. You can contact them directly regarding our processing of your information, by email at <a href="mailto:privacy@getflourish.co.uk">privacy@getflourish.co.uk</a>
             </p>
-            <div className="legal-address">
-              <p>167-169 Great Portland Street</p>
-              <p>5th Floor</p>
-              <p>London W1W 5PF</p>
-              <p>England</p>
-            </div>
           </div>
 
           {/* Section 13 */}
