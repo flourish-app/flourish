@@ -1705,3 +1705,5 @@ button { cursor: pointer; font-family: inherit; border: none; }
   .simpage-features__grid { grid-template-columns: repeat(3, 1fr); }
   .simpage-coming__inner { grid-template-columns: 1fr 1fr; gap: 64px; }
 }
+
+/* AUTH EXTRAS */

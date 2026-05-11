@@ -20,6 +20,8 @@ export default function SignupPage() {
   const [password, setPassword]         = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading]           = useState(false)
+  const [error, setError]               = useState('')
+  const [emailSent, setEmailSent]       = useState(false)
 
   const strength = (() => {
     if (!password) return 0
