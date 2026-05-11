@@ -30,6 +30,7 @@ Backend:
 - Supabase
 - PostgreSQL
 - Supabase Auth
+- Finnhub API
 
 Deployment:
 - Vercel
@@ -96,14 +97,15 @@ Implemented:
 - Responsive frontend
 - Vercel deployment
 - Supabase connection
+- Finnhub API Connection
+- Beginning phases of the simulator
 
 In progress:
-- Authentication flow
-- Dashboard
-- User persistence
+- Developing the dashboard and user interface
+- Develop and implementing the courses and their content
+
 
 Planned:
-- Investing simulator
 - Progress tracking
 - Course engine
 - Portfolio tracking
@@ -115,13 +117,10 @@ Planned:
 
 # Current Priorities
 
-1. Complete authentication
-2. Redirect users to dashboard after login
-3. Create protected dashboard routes
-4. Store user profiles
-5. Build dashboard MVP
-6. Add lesson progress tracking
-7. Build investing simulator MVP
+1. Build dashboard MVP
+2. Implement course content
+3. Add lesson progress tracking system
+4. Build investing simulator MVP
 
 ---
 

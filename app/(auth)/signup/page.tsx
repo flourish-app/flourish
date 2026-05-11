@@ -55,13 +55,13 @@ export default function SignupPage() {
     })
     if (signUpError) { setError(signUpError.message); return }
     if (!data.user)  { setError('Something went wrong. Please try again.'); return }
-    if (!data.session) { setEmailSent(true); return }
-    // Session exists (email confirmation disabled) — write full profile
+    // Always persist profile data — runs whether email confirmation is on or off
     await supabase.from('profiles').upsert({
       id: data.user.id, email, first_name: firstName,
       age_range: ageRange, university: notInHE ? null : university,
       course: notInHE ? null : course, not_in_he: notInHE,
     })
+    if (!data.session) { setEmailSent(true); return }
     router.push('/dashboard')
   } catch (err) {
     setError(err instanceof Error ? err.message : 'Something went wrong.')

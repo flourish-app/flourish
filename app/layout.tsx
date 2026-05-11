@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { DM_Serif_Display, Inter } from 'next/font/google'
+import { SpeedInsights } from '@vercel/speed-insights/next'
+import ThemeProvider from '@/components/ThemeProvider'
 import './globals.css'
 
 const dmSerifDisplay = DM_Serif_Display({
@@ -21,8 +23,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${dmSerifDisplay.variable} ${inter.variable}`}>
-      <body>{children}</body>
+    <html lang="en" className={`${dmSerifDisplay.variable} ${inter.variable}`} suppressHydrationWarning>
+      <body>
+        <ThemeProvider>
+          {children}
+          <SpeedInsights />
+        </ThemeProvider>
+      </body>
     </html>
   )
 }

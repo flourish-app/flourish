@@ -11,9 +11,16 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_OUT') {
+        router.replace('/login')
+      }
+    })
+
     const init = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
-      if (!session) {
+      const { data: { session }, error } = await supabase.auth.getSession()
+      if (error || !session) {
+        await supabase.auth.signOut()
         router.replace('/login')
         return
       }
@@ -35,6 +42,8 @@ export default function DashboardPage() {
       setLoading(false)
     }
     init()
+
+    return () => subscription.unsubscribe()
   }, [router])
 
   if (loading) {

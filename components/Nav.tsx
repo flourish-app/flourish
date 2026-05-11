@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
+import ThemeToggle from '@/components/ThemeToggle'
 
 export default function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -65,6 +66,7 @@ export default function Nav() {
         </nav>
 
         <div className="nav__actions">
+          <ThemeToggle />
           {isSignedIn ? (
             <Link href="/dashboard" className="btn btn--primary">Dashboard</Link>
           ) : (

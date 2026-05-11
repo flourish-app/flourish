@@ -4,21 +4,32 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
+import ThemeToggle from '@/components/ThemeToggle'
 
 const NAV: { section?: string; items: { href: string; label: string }[] }[] = [
   {
     items: [
       { href: '/dashboard', label: 'Overview' },
-      { href: '/simulator', label: 'Simulator' },
+      { href: '/dashboard/profile', label: 'Profile' },
+    ],
+  },
+  {
+    section: 'Simulator',
+    items: [
+      { href: '/dashboard/simulator', label: 'Portfolio' },
+      { href: '/dashboard/simulator/stocks', label: 'Browse stocks' },
+      { href: '/dashboard/simulator/performance', label: 'Performance' },
+      { href: '/dashboard/simulator/history', label: 'History' },
     ],
   },
   {
     section: 'Courses',
     items: [
-      { href: '/courses/investing-from-scratch', label: 'Investing from scratch' },
-      { href: '/courses/isas-and-tax-free-saving', label: 'ISAs & tax-free saving' },
-      { href: '/courses/stocks-etfs-and-funds', label: 'Stocks, ETFs & funds' },
-      { href: '/courses/pensions-and-your-future', label: 'Pensions & your future' },
+      { href: '/dashboard/courses', label: 'All courses' },
+      { href: '/dashboard/courses/investing-from-scratch', label: 'Investing from scratch' },
+      { href: '/dashboard/courses/isas-and-tax-free-saving', label: 'ISAs & tax-free saving' },
+      { href: '/dashboard/courses/stocks-etfs-and-funds', label: 'Stocks, ETFs & funds' },
+      { href: '/dashboard/courses/pensions-and-your-future', label: 'Pensions & your future' },
     ],
   },
   {
@@ -70,9 +81,12 @@ function SidebarContent({ onNav }: { onNav?: () => void }) {
       </nav>
 
       <div className="sidebar__footer">
-        <button className="sidebar__signout" onClick={handleSignOut}>
-          Sign out
-        </button>
+        <div className="sidebar__footer-row">
+          <ThemeToggle />
+          <button className="sidebar__signout" onClick={handleSignOut}>
+            Sign out
+          </button>
+        </div>
       </div>
     </>
   )
