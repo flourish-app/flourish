@@ -203,3 +203,24 @@ Flourish IS:
 
 Core emotional goal:
 Help students feel more confident about money and investing early in life.
+
+---
+
+# Security Rules
+
+- Never trust client-side data
+- Validate and sanitize all user input
+- Use server-side authorization checks
+- Do not expose service role keys to the client
+- Use Supabase Row Level Security (RLS)
+- Use environment variables for secrets
+- Never hardcode API keys
+- Protect authenticated routes
+- Use parameterized queries only
+- Escape/sanitize user-generated content
+- Follow least-privilege principles
+- Never store plaintext passwords
+- Use Supabase Auth only for authentication
+- Validate all API request bodies with Zod
+- Rate limit sensitive endpoints where appropriate
+- Do not expose sensitive internal errors to users
