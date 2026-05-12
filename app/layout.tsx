@@ -18,8 +18,8 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Flourish - Investing Education for UK Students',
-  description: 'Free investing education for UK students. Learn ISAs, ETFs, index funds and more through bite-sized lessons, live simulations and real tools.',
+  title: 'Flourish | Learn Investing, Build Wealth & Practise Risk-Free',
+  description: 'Flourish helps students and young adults learn investing through interactive courses, practical tools, and a live stock market simulator — built to make finance feel simple.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

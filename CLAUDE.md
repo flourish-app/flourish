@@ -17,6 +17,12 @@ npm run lint     # ESLint
 No test suite exists. There are no test files to run.
 
 ---
+## Instructions for Claude
+
+### Crucial
+Reply in the most concise form possible, without damaging quality. Skip plesantries, preambles and recaps/repeats of my question. Do not narrate your steps.
+
+Do not make any changes until you have 95% confidence in what you need to build. Ask me follow-up questions until you reach that confidence.
 
 ## Architecture
 
@@ -73,6 +79,35 @@ All CSS is in `app/globals.css` — one large file using custom classes (loosely
 `components/Nav.tsx` — public marketing navbar (auth-aware: shows Dashboard link when signed in).  
 `components/DashboardSidebar.tsx` — dashboard sidebar with mobile drawer; includes `ThemeToggle`.  
 `components/ThemeProvider.tsx` and `components/ThemeToggle.tsx` — theme management.
+
+#### Component directories
+
+All components follow a **container/presentational** split: state, Supabase calls, and event handlers live in `page.tsx`; UI is extracted to named components. `'use client'` is only added where state/effects/event handlers are needed.
+
+**`components/Marketing/`** — UI for `app/(main)/` pages.
+- `types.ts` — shared types (`MarketingLesson`)
+- `CtaBanner.tsx` — full-width CTA section; accepts `children: React.ReactNode` so server pages can pass plain `<Link>`s or client components like `StartLearningCTA`
+- `MarketingCourseSignupCard.tsx` — course hero signup card (props: `emoji`, `total`)
+- `MarketingCourseCurriculum.tsx` — free/locked lesson list (props: `lessons: MarketingLesson[]`, `subText?`)
+- `MarketingCourseCTABlock.tsx` — mid-page CTA block with sign-up/login links (props: `headline`, `sub`)
+- `HomeHero.tsx`, `HomeStats.tsx`, `HomeHowItWorks.tsx`, `HomeCoursesGrid.tsx`, `HomeToolsGrid.tsx`, `HomeSimTeaser.tsx`, `HomeTestimonials.tsx` — homepage sections (data hardcoded internally, no props)
+- `HowItWorksGap.tsx`, `HowItWorksBarriers.tsx`, `HowItWorksJourney.tsx` — how-it-works page sections
+- `SimPageHero.tsx`, `SimPageFeatures.tsx`, `SimPageSteps.tsx`, `SimPageLeaderboard.tsx` — simulator marketing page sections
+
+**`components/Auth/`** — UI for `app/(auth)/` pages.
+- `types.ts` — `SignupStep1Props`, `SignupStep2Props`
+- `LoginForm.tsx` (`'use client'`) — full login form with `useSearchParams`; page.tsx wraps in `<Suspense>`
+- `SignupStep1.tsx` (`'use client'`) — step 1 of signup (name, age range, uni/course)
+- `SignupStep2.tsx` (`'use client'`) — step 2 of signup (email, password + strength meter)
+- `SignupEmailSent.tsx` — confirmation screen (no client directive)
+- `ForgotPasswordForm.tsx` (`'use client'`) — forgot password email input
+- `ForgotPasswordSent.tsx` — sent confirmation screen (no client directive)
+- `ResetPasswordForm.tsx` (`'use client'`) — new password + confirm fields
+
+**`components/CourseOverview/`** — used by both `(main)/courses/` pages and `dashboard/courses/` pages.
+- `CourseOutcomes`, `CourseForGrid`, `CourseFaq`, `CourseRelated` — shared UI blocks; `RelatedCourse.href` is populated with the appropriate path by each consumer.
+
+**`components/DashboardCourses/`** — `CourseCard`, `ComingSoonCard` used in dashboard course listing.
 
 ### Environment variables
 
