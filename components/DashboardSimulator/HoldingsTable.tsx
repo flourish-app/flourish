@@ -74,9 +74,18 @@ export default function HoldingsTable({ rows, hasHoldings }: Props) {
                       ? `£${row.value.toFixed(2)}`
                       : <span className="sim-muted">—</span>}
                   </td>
-                  <td className={`sim-col-r ${row.pnl !== null ? (row.pnl >= 0 ? 'sim-pos' : 'sim-neg') : ''}`}>
+                  <td className="sim-col-r">
                     {row.pnl !== null
-                      ? <>{formatPnl(row.pnl)} <span className="sim-pct">({row.pnlPct !== null ? `${row.pnlPct >= 0 ? '+' : ''}${row.pnlPct.toFixed(1)}%` : ''})</span></>
+                      ? (
+                          <span className="sim-pnl">
+                            <span>{formatPnl(row.pnl)}</span>
+                            {row.pnlPct !== null && (
+                              <span className={`sim-pct ${row.pnlPct >= 0 ? 'sim-pos' : 'sim-neg'}`}>
+                                ({row.pnlPct >= 0 ? '+' : ''}{row.pnlPct.toFixed(1)}%)
+                              </span>
+                            )}
+                          </span>
+                        )
                       : <span className="sim-muted">—</span>}
                   </td>
                   <td>

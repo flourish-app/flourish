@@ -1,5 +1,7 @@
 'use client'
 
+import { RefreshCw } from 'lucide-react'
+
 type Props = {
   show: boolean
   resetting: boolean
@@ -13,6 +15,7 @@ export default function ResetModal({ show, resetting, onOpen, onClose, onConfirm
     <>
       <div className="sim-reset-zone">
         <button className="sim-reset-btn" onClick={onOpen}>
+          <RefreshCw className="sim-reset-btn__icon" aria-hidden="true" size={14} strokeWidth={2} />
           Reset portfolio
         </button>
       </div>

@@ -247,7 +247,7 @@ export function RiskProfiler({ isAuthenticated = false }: { isAuthenticated?: bo
                     <span><span className="risk-alloc__dot" style={{ background: 'var(--grey-2)', border: '1px solid var(--grey-3)' }} />Cash {profile.cash}%</span>
                   </div>
                   <p className="risk-alloc__note">
-                    This is a general starting point relevant to your risk level, not personalised financial advice. Your ideal allocation depends on your individual circumstances and decisions. These numbers are illustrative only and not financial advice. Consider speaking to a FCA-regulated financial adviser before making investment decisions.
+                    This is a general starting point relevant to your risk level, not personalised financial advice. Your ideal allocation depends on your individual circumstances and decisions. These numbers are illustrative only and not financial advice. Consider doing your own research or speaking to a FCA-regulated adviser before making investment decisions.
                   </p>
                 </div>
                 <div className="risk-tips">
