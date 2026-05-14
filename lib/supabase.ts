@@ -26,4 +26,5 @@ export type Profile = {
   not_in_he: boolean
   created_at: string
   total_xp: number
+  avatar_url: string | null
 }

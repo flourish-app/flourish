@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
+import { loginSchema } from './types'
 
 export default function LoginForm() {
   const router = useRouter()
@@ -15,10 +16,21 @@ export default function LoginForm() {
   const [error,        setError]        = useState('')
   const [rememberMe,   setRememberMe]   = useState(true)
   const [successMsg,   setSuccessMsg]   = useState('')
+  const [touched,      setTouched]      = useState({ email: false, password: false })
 
   useEffect(() => {
     if (searchParams.get('reset') === '1') setSuccessMsg('Password updated — sign in with your new password.')
   }, [searchParams])
+
+  const result   = loginSchema.safeParse({ email, password })
+  const isValid  = result.success
+  const fieldError = (field: 'email' | 'password') => {
+    if (!touched[field] || result.success) return null
+    return result.error.issues.find(i => i.path[0] === field)?.message ?? null
+  }
+
+  const emailErr    = fieldError('email')
+  const passwordErr = fieldError('password')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -52,11 +64,14 @@ export default function LoginForm() {
         <div className="form-group">
           <label className="form-label" htmlFor="email">Email address</label>
           <input
-            id="email" type="email" className="form-input"
+            id="email" type="email"
+            className={`form-input${emailErr ? ' form-input--error' : ''}`}
             placeholder="you@university.ac.uk" value={email}
             onChange={(e) => setEmail(e.target.value)}
+            onBlur={() => setTouched(t => ({ ...t, email: true }))}
             required autoComplete="email" autoFocus
           />
+          {emailErr && <p className="form-field-error">{emailErr}</p>}
         </div>
 
         <div className="form-group">
@@ -66,15 +81,19 @@ export default function LoginForm() {
           </div>
           <div className="form-input-wrap">
             <input
-              id="password" type={showPassword ? 'text' : 'password'} className="form-input"
+              id="password" type={showPassword ? 'text' : 'password'}
+              className={`form-input${passwordErr ? ' form-input--error' : ''}`}
               placeholder="••••••••" value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onBlur={() => setTouched(t => ({ ...t, password: true }))}
               required autoComplete="current-password"
             />
-            <button type="button" className="form-input-toggle" onClick={() => setShowPassword(!showPassword)} aria-label={showPassword ? 'Hide password' : 'Show password'}>
+            <button type="button" className="form-input-toggle" onClick={() => setShowPassword(!showPassword)}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}>
               {showPassword ? '🙈' : '👁️'}
             </button>
           </div>
+          {passwordErr && <p className="form-field-error">{passwordErr}</p>}
         </div>
 
         <label className="form-checkbox-label">
@@ -85,7 +104,11 @@ export default function LoginForm() {
         {successMsg && <p className="auth-success">{successMsg}</p>}
         {error && <p className="auth-error">{error}</p>}
 
-        <button type="submit" className={`btn btn--primary btn--lg auth-submit${loading ? ' auth-submit--loading' : ''}`} disabled={loading || !email || !password}>
+        <button
+          type="submit"
+          className={`btn btn--primary btn--lg auth-submit${loading ? ' auth-submit--loading' : ''}`}
+          disabled={loading || !isValid}
+        >
           {loading ? <><span className="auth-spinner" /> Signing in…</> : 'Sign in'}
         </button>
       </form>

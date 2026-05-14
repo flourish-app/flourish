@@ -3,9 +3,24 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
-import SignupStep1     from '@/components/Auth/SignupStep1'
-import SignupStep2     from '@/components/Auth/SignupStep2'
-import SignupEmailSent from '@/components/Auth/SignupEmailSent'
+import SignupStep1          from '@/components/Auth/SignupStep1'
+import SignupStep2          from '@/components/Auth/SignupStep2'
+import SignupEmailSent      from '@/components/Auth/SignupEmailSent'
+import SignupBenefitsPanel  from '@/components/Auth/SignupBenefitsPanel'
+
+function TrustBadge() {
+  return (
+    <p className="signup-trust">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M8 1L2 3.5V8C2 11.5 5 14.2 8 15C11 14.2 14 11.5 14 8V3.5L8 1Z"
+          stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" fill="none" />
+        <path d="M5.5 8l2 2 3-3"
+          stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+      Your data is safe with us. We&apos;ll never share your information.
+    </p>
+  )
+}
 
 export default function SignupPage() {
   const router = useRouter()
@@ -65,39 +80,45 @@ export default function SignupPage() {
 
   const firstName = name.trim().split(' ')[0]
 
+  const progressWidth = emailSent ? '100%' : step === 1 ? '50%' : '100%'
+  const progressLabel = emailSent ? 'Step 2 of 2' : step === 1 ? 'Step 1 of 2' : 'Step 2 of 2'
+
   return (
-    <div className="auth-card">
-      <div className="signup-progress">
-        <div className="signup-progress__track">
-          <div className="signup-progress__fill" style={{ width: step === 1 ? '50%' : '100%' }} />
+    <div className="signup-wrapper">
+      <div className="signup-step2-layout">
+        <SignupBenefitsPanel />
+        <div className="signup-step2-form">
+          <div className="signup-progress">
+            <div className="signup-progress__track">
+              <div className="signup-progress__fill" style={{ width: progressWidth }} />
+            </div>
+            <span className="signup-progress__label">{progressLabel}</span>
+          </div>
+          {step === 1 && !emailSent && (
+            <SignupStep1
+              name={name}           onName={setName}
+              ageRange={ageRange}   onAgeRange={setAgeRange}
+              university={university} onUniversity={v => setUniversity(v)}
+              course={course}       onCourse={v => setCourse(v)}
+              notInHE={notInHE}     onNotInHE={checked => { setNotInHE(checked); if (checked) { setUniversity(''); setCourse('') } }}
+              onSubmit={handleStep1}
+            />
+          )}
+          {step === 2 && !emailSent && (
+            <SignupStep2
+              firstName={firstName}
+              email={email}         onEmail={setEmail}
+              password={password}   onPassword={setPassword}
+              showPassword={showPassword} onShowPassword={() => setShowPassword(!showPassword)}
+              strength={strength}   strengthLabel={strengthLabel} strengthColour={strengthColour}
+              loading={loading}     error={error}
+              onSubmit={handleSubmit} onBack={() => setStep(1)}
+            />
+          )}
+          {emailSent && <SignupEmailSent email={email} />}
         </div>
-        <span className="signup-progress__label">Step {step} of 2</span>
       </div>
-
-      {!emailSent && step === 1 && (
-        <SignupStep1
-          name={name}           onName={setName}
-          ageRange={ageRange}   onAgeRange={setAgeRange}
-          university={university} onUniversity={v => setUniversity(v)}
-          course={course}       onCourse={v => setCourse(v)}
-          notInHE={notInHE}     onNotInHE={checked => { setNotInHE(checked); if (checked) { setUniversity(''); setCourse('') } }}
-          onSubmit={handleStep1}
-        />
-      )}
-
-      {emailSent && <SignupEmailSent email={email} />}
-
-      {!emailSent && step === 2 && (
-        <SignupStep2
-          firstName={firstName}
-          email={email}         onEmail={setEmail}
-          password={password}   onPassword={setPassword}
-          showPassword={showPassword} onShowPassword={() => setShowPassword(!showPassword)}
-          strength={strength}   strengthLabel={strengthLabel} strengthColour={strengthColour}
-          loading={loading}     error={error}
-          onSubmit={handleSubmit} onBack={() => setStep(1)}
-        />
-      )}
+      <TrustBadge />
     </div>
   )
 }

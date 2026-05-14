@@ -1,12 +1,29 @@
 'use client'
 
+import { useState } from 'react'
+import { signupStep2Schema } from './types'
 import type { SignupStep2Props } from './types'
+
+const PASSWORD_RULES = [
+  { label: 'At least 8 characters',       test: (p: string) => p.length >= 8 },
+  { label: 'Upper & lowercase letters',   test: (p: string) => /[a-z]/.test(p) && /[A-Z]/.test(p) },
+  { label: 'At least one number',           test: (p: string) => /[0-9]/.test(p) },
+  { label: 'At least one special character', test: (p: string) => /[^a-zA-Z0-9]/.test(p) },
+]
 
 export default function SignupStep2({
   firstName, email, onEmail, password, onPassword,
   showPassword, onShowPassword, strength, strengthLabel, strengthColour,
   loading, error, onSubmit, onBack,
 }: SignupStep2Props) {
+  const [touched, setTouched] = useState({ email: false, password: false })
+
+  const result   = signupStep2Schema.safeParse({ email, password })
+  const isValid  = result.success
+  const emailErr = touched.email && !result.success
+    ? result.error.issues.find(i => i.path[0] === 'email')?.message ?? null
+    : null
+
   return (
     <>
       <div className="auth-card__header">
@@ -19,24 +36,47 @@ export default function SignupStep2({
       <form className="auth-form" onSubmit={onSubmit} noValidate>
         <div className="form-group">
           <label className="form-label" htmlFor="email">Email address</label>
-          <input id="email" type="email" className="form-input"
+          <input
+            id="email" type="email"
+            className={`form-input${emailErr ? ' form-input--error' : ''}`}
             placeholder="you@university.ac.uk" value={email}
             onChange={(e) => onEmail(e.target.value)}
-            required autoComplete="email" autoFocus />
+            onBlur={() => setTouched(t => ({ ...t, email: true }))}
+            required autoComplete="email" autoFocus
+          />
+          {emailErr && <p className="form-field-error">{emailErr}</p>}
         </div>
 
         <div className="form-group">
           <label className="form-label" htmlFor="password">Password</label>
           <div className="form-input-wrap">
-            <input id="password" type={showPassword ? 'text' : 'password'} className="form-input"
+            <input
+              id="password" type={showPassword ? 'text' : 'password'}
+              className="form-input"
               placeholder="••••••••" value={password}
               onChange={(e) => onPassword(e.target.value)}
-              required autoComplete="new-password" />
+              onBlur={() => setTouched(t => ({ ...t, password: true }))}
+              required autoComplete="new-password"
+            />
             <button type="button" className="form-input-toggle" onClick={onShowPassword}
               aria-label={showPassword ? 'Hide password' : 'Show password'}>
               {showPassword ? '🙈' : '👁️'}
             </button>
           </div>
+
+          {/* Password rules */}
+          <ul className="password-rules">
+            {PASSWORD_RULES.map(({ label, test }) => {
+              const pass = test(password)
+              return (
+                <li key={label} className={`password-rules__item${pass ? ' password-rules__item--pass' : ''}`}>
+                  <span className="password-rules__icon">{pass ? '✓' : '·'}</span>
+                  {label}
+                </li>
+              )
+            })}
+          </ul>
+
           {password.length > 0 && (
             <div className="password-strength">
               <div className="password-strength__bars">
@@ -50,8 +90,11 @@ export default function SignupStep2({
           )}
         </div>
 
-        <button type="submit" className={`btn btn--green btn--lg auth-submit${loading ? ' auth-submit--loading' : ''}`}
-          disabled={loading || !email || password.length < 8}>
+        <button
+          type="submit"
+          className={`btn btn--green btn--lg auth-submit${loading ? ' auth-submit--loading' : ''}`}
+          disabled={loading || !isValid}
+        >
           {loading ? <><span className="auth-spinner" /> Creating account…</> : 'Create free account'}
         </button>
       </form>

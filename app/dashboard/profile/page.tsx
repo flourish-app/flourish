@@ -4,9 +4,11 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import type { Profile } from '@/lib/supabase'
-import ProfileIdentityCard from '@/components/Profile/ProfileIdentityCard'
-import ProfileDetails      from '@/components/Profile/ProfileDetails'
-import ProfileEditForm     from '@/components/Profile/ProfileEditForm'
+import ProfileIdentityCard    from '@/components/Profile/ProfileIdentityCard'
+import ProfileDetails         from '@/components/Profile/ProfileDetails'
+import ProfileEditForm        from '@/components/Profile/ProfileEditForm'
+import ProfileSecuritySection from '@/components/Profile/ProfileSecuritySection'
+import DeleteAccountSection   from '@/components/Profile/DeleteAccountSection'
 
 type Draft = { first_name: string; age_range: string; university: string; course: string }
 
@@ -98,8 +100,11 @@ export default function ProfilePage() {
           displayName={displayName}
           email={profile?.email}
           createdAt={profile?.created_at}
+          avatarUrl={profile?.avatar_url}
+          userId={profile?.id ?? ''}
           editing={editing}
           onEdit={openEdit}
+          onAvatarChange={(url) => setProfile(prev => prev ? { ...prev, avatar_url: url } : prev)}
         />
         {!editing
           ? <ProfileDetails profile={profile} />
@@ -113,6 +118,8 @@ export default function ProfilePage() {
             />
         }
       </div>
+      {profile?.email && <ProfileSecuritySection currentEmail={profile.email} />}
+      <DeleteAccountSection />
     </div>
   )
 }

@@ -1,3 +1,38 @@
+import { z } from 'zod'
+
+// ── Shared Zod schemas ────────────────────────────────────────────────────────
+
+export const emailSchema = z
+  .string()
+  .min(1, 'Email is required')
+  .email('Enter a valid email address')
+
+export const passwordLoginSchema = z
+  .string()
+  .min(1, 'Password is required')
+
+export const passwordSignupSchema = z
+  .string()
+  .min(8,            'At least 8 characters')
+  .refine(p => /[a-z]/.test(p) && /[A-Z]/.test(p), 'Upper & lowercase letters')
+  .refine(p => /[0-9]/.test(p),        'One number')
+  .refine(p => /[^a-zA-Z0-9]/.test(p), 'One symbol')
+
+export const loginSchema = z.object({
+  email:    emailSchema,
+  password: passwordLoginSchema,
+})
+
+export const signupStep2Schema = z.object({
+  email:    emailSchema,
+  password: passwordSignupSchema,
+})
+
+export type LoginFormData    = z.infer<typeof loginSchema>
+export type SignupStep2Data  = z.infer<typeof signupStep2Schema>
+
+// ── Component prop types ──────────────────────────────────────────────────────
+
 export type AuthStep = 1 | 2
 
 export type SignupStep1Props = {
