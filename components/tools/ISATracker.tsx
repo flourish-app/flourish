@@ -2,6 +2,8 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
+import { useDebouncedHabit } from '@/hooks/useDebouncedHabit'
+import { GuestSaveBanner } from './GuestSaveBanner'
 
 const ANNUAL_ALLOWANCE = 20_000
 const LISA_CAP = 4_000
@@ -71,10 +73,18 @@ function ISASlider({
 export function ISATracker({ isAuthenticated = false }: { isAuthenticated?: boolean }) {
   const taxYear = useMemo(() => getTaxYear(), [])
 
-  const [cash,   setCash]   = useState(0)
-  const [stocks, setStocks] = useState(0)
-  const [lisa,   setLisa]   = useState(0)
-  const [ifisa,  setIfisa]  = useState(0)
+  const [cash,        setCash]        = useState(0)
+  const [stocks,      setStocks]      = useState(0)
+  const [lisa,        setLisa]        = useState(0)
+  const [ifisa,       setIfisa]       = useState(0)
+  const [showBanner,  setShowBanner]  = useState(false)
+
+  useDebouncedHabit({
+    calculator: 'isa-tracker',
+    values: { cash, stocks, lisa, ifisa },
+    enabled: isAuthenticated,
+    onGuestEngaged: isAuthenticated ? undefined : () => setShowBanner(true),
+  })
 
   const total     = cash + stocks + lisa + ifisa
   const remaining = Math.max(0, ANNUAL_ALLOWANCE - total)
@@ -243,6 +253,10 @@ export function ISATracker({ isAuthenticated = false }: { isAuthenticated?: bool
               )}
             </div>
           </div>
+
+          {!isAuthenticated && showBanner && (
+            <GuestSaveBanner onDismiss={() => setShowBanner(false)} />
+          )}
 
           {!isAuthenticated && (
             <div className="tool-signup-prompt">

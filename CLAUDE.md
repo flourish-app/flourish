@@ -20,9 +20,25 @@ No test suite exists. There are no test files to run.
 ## Instructions for Claude
 
 ### Crucial
-Reply in the most concise form possible, without damaging quality. Skip plesantries, preambles and recaps/repeats of my question. Do not narrate your steps.
+Reply in the most concise form possible, without damaging quality. Skip pleasantries, preambles and recaps/repeats of my question. Do not narrate your steps.
 
 Do not make any changes until you have 95% confidence in what you need to build. Ask me follow-up questions until you reach that confidence.
+
+### Design context
+
+**`PRODUCT.md`** and **`DESIGN.md`** exist at the project root and are the authoritative sources for all design decisions. Read both before any UI or styling work.
+
+- `PRODUCT.md` — register, target users, brand personality, anti-references, design principles, accessibility requirements
+- `DESIGN.md` — color palette, typography hierarchy, elevation rules, component specs, named rules (The Momentum Rule, The Serif Reserve Rule, The Two-Background Rule, The Flat-By-Default Rule, The Italic Signal)
+
+Key constraints to carry at all times:
+- Growth Green (`#2e7d5e`) on ≤20% of any surface — scarcity is its signal
+- DM Serif Display for display/headline/title/quote only; Inter for all UI, labels, body, buttons
+- Flat surfaces by default; no resting shadows on marketing cards
+- No `border-left`/`border-right` >1px as decorative accent stripes
+- No gradient text (`background-clip: text`)
+- No identical icon+heading+text card grids
+- Dark mode defaults to `light`; never use `enableSystem`
 
 ## Architecture
 
@@ -49,6 +65,7 @@ Key tables:
 - `stocks` — reference data for tradeable stocks (`ticker`, `name`, `currency`, `sector`, `flag`, `is_active`)
 - `stock_prices` — cached prices written by the `get-prices` edge function; 30s TTL
 - `portfolio_snapshots` — daily EOD snapshots written by the cron job
+- `user_habits` — event-driven behavioural tracking (`id`, `user_id`, `event_type`, `metadata` jsonb, `occurred_at`); RLS: users read/write own rows only. Migration: `supabase/migrations/20260515_user_habits.sql`
 
 ### Simulator
 
@@ -111,6 +128,50 @@ All components follow a **container/presentational** split: state, Supabase call
 - `CourseOutcomes`, `CourseForGrid`, `CourseFaq`, `CourseRelated` — shared UI blocks; `RelatedCourse.href` is populated with the appropriate path by each consumer.
 
 **`components/DashboardCourses/`** — `CourseCard`, `ComingSoonCard` used in dashboard course listing.
+
+### Course registry
+
+**`lib/curriculum.ts` is the single source of truth for all course metadata.** Do not hardcode course data in page files.
+
+- `CourseEntry` — type for one course (`slug`, `emoji`, `tag`, `tagStyle`, `badge?`, `title`, `body`, `lessons`, `duration`, `status: 'available' | 'coming-soon'`)
+- `courses` — full array (available + coming-soon)
+- `availableCourses` / `comingSoonCourses` — pre-filtered arrays
+- `totalLessons` — derived lesson count across all courses
+
+**Adding a new course = one new entry in `courses`.** The following update automatically:
+- `app/(main)/courses/page.tsx` — marketing course listing
+- `app/dashboard/courses/page.tsx` — dashboard course listing
+- `components/Marketing/HomeCoursesGrid.tsx` — home page course grid
+
+`lib/curriculum.ts` also exports the `CurriculumMap` (8-topic dependency graph) and utilities `getLessonById`, `getUnlockedLessons`, `getDependencyChain`. The JSON Schema is at `public/schemas/curriculum-map.json`.
+
+### Behavioural tracking
+
+**`lib/habits.ts`** — `recordHabit(eventType, meta)` writes to `user_habits`. Returns `Promise<void>`; safe to `await` before navigation or call fire-and-forget.
+
+Event catalogue (`HabitMeta`):
+- `lesson_finish` — `{ course_slug, lesson_slug }` — fired in all 4 `[lesson]/page.tsx` files inside `markComplete()`, before `router.push`
+- `course_complete` — `{ course_slug }` — fired on final lesson, before redirect
+- `course_start` — `{ course_slug }`
+- `quiz_attempt` — `{ course_slug, lesson_slug, passed }`
+- `sim_trade` — `{ ticker, type, shares, price }`
+- `sim_reset` — `{}`
+- `calc_use` — `CalcUseMeta`: `{ calculator: string; [key: string]: number | string | boolean }` — flat spread of all tool values
+- `tool_open` — `{ tool }`
+
+**`hooks/useDebouncedHabit.ts`** — reusable hook for multi-slider tools. Fires `recordHabit('calc_use', { calculator, ...values })` after 3 s of inactivity across **all** sliders; deduplicates via JSON snapshot; skips mount (no interaction yet); no-ops when `enabled = false`. Wired into `CompoundCalculator`, `ISATracker`, `LISACalculator`. Drop into any new tool: `useDebouncedHabit({ calculator: 'my-tool', values: { a, b, c }, enabled: isAuthenticated })`.
+
+**Guest engagement path** — when `enabled = false` (unauthenticated), the hook accepts `onGuestEngaged?: () => void` and `guestEngageMs?: number` (default 4000). The callback fires **once**, 4 s after the **first** slider interaction (timer is not reset by subsequent changes). Use this to show a signup nudge without blocking the UI. `recordHabit` itself silently no-ops when there is no session — no console errors for guests.
+
+**`components/tools/GuestSaveBanner.tsx`** — fixed-position bottom banner shown to guests after engagement. Props: `{ onDismiss: () => void }`. Links to `/start-learning`. Styled with `.guest-save-banner*` classes (green glow border + `slideUpBanner` bounce animation defined in `globals.css`). Rendered conditionally in `CompoundCalculator`, `ISATracker`, `LISACalculator` via local `showBanner` state wired to `onGuestEngaged`.
+
+### Recommendation service
+
+**`lib/recommendations.ts`** — `getSuggestedNextStep(userId): Promise<NextStepSuggestion>`.
+
+`NextStepSuggestion` shape: `{ type, title, description, href, ctaLabel, context, courseSlug?, lessonSlug? }` — stable contract; components bind to this only.
+
+Active strategy is `strategySimple` (queries `lesson_completions`, walks `availableCourses` in order, returns first incomplete lesson). Swap to AI strategy by changing one line in `getSuggestedNextStep`. The `strategyAI` stub is commented in the file.
 
 ### Dashboard Tools page
 

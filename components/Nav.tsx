@@ -62,6 +62,11 @@ export default function Nav() {
               </div>
             </li>
             <li><Link href="/simulator">Simulator</Link></li>
+            <li>
+              <Link href="/plans" className={pathname === '/plans' ? 'active' : ''}>
+                Plans
+              </Link>
+            </li>
           </ul>
         </nav>
 
@@ -100,6 +105,7 @@ export default function Nav() {
         <Link href="/tools" style={{ paddingLeft: '12px' }} onClick={() => setMobileOpen(false)}>All tools</Link>
         <Link href="/courses" onClick={() => setMobileOpen(false)}>All courses</Link>
         <Link href="/simulator" onClick={() => setMobileOpen(false)}>Simulator</Link>
+        <Link href="/plans" onClick={() => setMobileOpen(false)}>Plans</Link>
         {isSignedIn ? (
           <Link href="/dashboard" className="btn btn--primary" onClick={() => setMobileOpen(false)}>Dashboard</Link>
         ) : (

@@ -12,6 +12,7 @@ import LevelUpModal  from '@/components/Lesson/LevelUpModal'
 import LessonTopbar  from '@/components/Lesson/LessonTopbar'
 import LessonSection from '@/components/Lesson/LessonSection'
 import LessonFooter  from '@/components/Lesson/LessonFooter'
+import { recordHabit } from '@/lib/habits'
 
 const COURSE_SLUG = 'isas-and-tax-free-saving'
 const COURSE_HREF = `/dashboard/courses/${COURSE_SLUG}`
@@ -108,6 +109,8 @@ export default function LessonPage() {
     )
     await handleAwardXp('lesson_complete', `${COURSE_SLUG}:${slug}`, XP.LESSON_COMPLETE, prevXp)
     if (!next) await handleAwardXp('course_complete', COURSE_SLUG, XP.COURSE_COMPLETE, prevXp + XP.LESSON_COMPLETE)
+    await recordHabit('lesson_finish', { course_slug: COURSE_SLUG, lesson_slug: slug })
+    if (!next) await recordHabit('course_complete', { course_slug: COURSE_SLUG })
     if (next) router.push(`${COURSE_HREF}/${next.slug}`)
     else      router.push(COURSE_HREF)
   }

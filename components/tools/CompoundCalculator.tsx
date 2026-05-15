@@ -2,6 +2,8 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
+import { useDebouncedHabit } from '@/hooks/useDebouncedHabit'
+import { GuestSaveBanner } from './GuestSaveBanner'
 
 const fmt = (n: number) =>
   n >= 1_000_000
@@ -55,10 +57,18 @@ function Slider({
 }
 
 export function CompoundCalculator({ isAuthenticated = false }: { isAuthenticated?: boolean }) {
-  const [starting,  setStarting]  = useState(1000)
-  const [monthly,   setMonthly]   = useState(50)
-  const [rate,      setRate]      = useState(7)
-  const [years,     setYears]     = useState(30)
+  const [starting,    setStarting]    = useState(1000)
+  const [monthly,     setMonthly]     = useState(50)
+  const [rate,        setRate]        = useState(7)
+  const [years,       setYears]       = useState(30)
+  const [showBanner,  setShowBanner]  = useState(false)
+
+  useDebouncedHabit({
+    calculator: 'compound-interest',
+    values: { starting, monthly, rate, years },
+    enabled: isAuthenticated,
+    onGuestEngaged: isAuthenticated ? undefined : () => setShowBanner(true),
+  })
 
   const data = useMemo(() => {
     const r = rate / 100 / 12
@@ -202,6 +212,10 @@ export function CompoundCalculator({ isAuthenticated = false }: { isAuthenticate
               </div>
             </div>
           </div>
+
+          {!isAuthenticated && showBanner && (
+            <GuestSaveBanner onDismiss={() => setShowBanner(false)} />
+          )}
 
           {!isAuthenticated && (
             <div className="tool-signup-prompt">

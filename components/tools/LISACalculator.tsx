@@ -2,6 +2,8 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
+import { useDebouncedHabit } from '@/hooks/useDebouncedHabit'
+import { GuestSaveBanner } from './GuestSaveBanner'
 
 const ANNUAL_CAP       = 4_000
 const MAX_MONTHLY      = 333
@@ -64,11 +66,19 @@ function Slider({
 }
 
 export function LISACalculator({ isAuthenticated = false }: { isAuthenticated?: boolean }) {
-  const [goal,    setGoal]    = useState<Goal>('home')
-  const [age,     setAge]     = useState(25)
-  const [monthly, setMonthly] = useState(200)
-  const [rate,    setRate]    = useState(5)
-  const [years,   setYears]   = useState(5)
+  const [goal,       setGoal]       = useState<Goal>('home')
+  const [age,        setAge]        = useState(25)
+  const [monthly,    setMonthly]    = useState(200)
+  const [rate,       setRate]       = useState(5)
+  const [years,      setYears]      = useState(5)
+  const [showBanner, setShowBanner] = useState(false)
+
+  useDebouncedHabit({
+    calculator: 'lisa-calculator',
+    values: { goal, age, monthly, rate, years },
+    enabled: isAuthenticated,
+    onGuestEngaged: isAuthenticated ? undefined : () => setShowBanner(true),
+  })
 
   const contribYears    = goal === 'retirement' ? Math.max(0, CONTRIB_STOP_AGE - age) : years
   const growthOnlyYears = goal === 'retirement' ? 10 : 0
@@ -275,6 +285,10 @@ export function LISACalculator({ isAuthenticated = false }: { isAuthenticated?: 
               )}
             </div>
           </div>
+
+          {!isAuthenticated && showBanner && (
+            <GuestSaveBanner onDismiss={() => setShowBanner(false)} />
+          )}
 
           {!isAuthenticated && (
             <div className="tool-signup-prompt">

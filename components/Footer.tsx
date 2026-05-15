@@ -14,39 +14,42 @@ export default function Footer() {
           <div className="footer__col">
             <div className="footer__col-title">Learn</div>
             <ul>
-              <li><a href="#">Investing basics</a></li>
-              <li><a href="#">ISAs explained</a></li>
-              <li><a href="#">Stocks &amp; ETFs</a></li>
-              <li><a href="#">Pensions</a></li>
-              <li><a href="#">Budgeting</a></li>
+              <li><Link href="/courses">All courses</Link></li>
+              <li><Link href="/courses/investing-from-scratch">Investing basics</Link></li>
+              <li><Link href="/courses/isas-and-tax-free-saving">ISAs explained</Link></li>
+              <li><Link href="/courses/stocks-etfs-and-funds">Stocks &amp; ETFs</Link></li>
+              <li><Link href="/courses/pensions-and-your-future">Pensions</Link></li>
+              <li><span style={{ opacity: 0.45 }}>Budgeting</span></li>
             </ul>
           </div>
           <div className="footer__col">
             <div className="footer__col-title">Tools</div>
             <ul>
-              <li><a href="#">Compound calculator</a></li>
-              <li><a href="#">ISA tracker</a></li>
-              <li><a href="#">Risk profiler</a></li>
-              <li><a href="#">LISA calculator</a></li>
-              <li><a href="#">Budget planner</a></li>
+              <li><Link href="/tools">All tools</Link></li>
+              <li><Link href="/tools/compound-calculator">Compound calculator</Link></li>
+              <li><Link href="/tools/isa-tracker">ISA tracker</Link></li>
+              <li><Link href="/tools/risk-profiler">Risk profiler</Link></li>
+              <li><Link href="/tools/lisa-calculator">LISA calculator</Link></li>
+              <li><span style={{ opacity: 0.45 }}>Budget planner</span></li>
             </ul>
           </div>
           <div className="footer__col">
             <div className="footer__col-title">Simulate</div>
             <ul>
-              <li><a href="#">Paper trading</a></li>
-              <li><a href="#">Leaderboards</a></li>
-              <li><a href="#">Weekly challenges</a></li>
-              <li><a href="#">Portfolio builder</a></li>
+              <li><Link href="/simulator">Paper trading</Link></li>
+              <li><span style={{ opacity: 0.45 }}>Leaderboards</span></li>
+              <li><span style={{ opacity: 0.45 }}>Weekly challenges</span></li>
+              <li><Link href="/simulator">Portfolio builder</Link></li>
             </ul>
           </div>
           <div className="footer__col">
             <div className="footer__col-title">Company</div>
             <ul>
-              <li><a href="#">About</a></li>
-              <li><a href="#">Contact</a></li>
-              <li><a href="/privacy-policy">Privacy policy</a></li>
-              <li><a href="#">Terms of use</a></li>
+              <li><span style={{ opacity: 0.45 }}>About</span></li>
+              <li><span style={{ opacity: 0.45 }}>Contact</span></li>
+              <li><Link href="/privacy-policy">Privacy policy</Link></li>
+              <li><span style={{ opacity: 0.45 }}>Cookie policy</span></li>
+              <li><span style={{ opacity: 0.45 }}>Terms of service</span></li>
             </ul>
           </div>
         </div>

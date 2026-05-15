@@ -1,0 +1,217 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-15T00:00:00Z",
+  "title": "Design System: Flourish",
+  "extensions": {
+    "colorMeta": {
+      "growth-green": {
+        "role": "primary",
+        "displayName": "Growth Green",
+        "canonical": "#2e7d5e",
+        "tonalRamp": ["#0a1f16", "#143324", "#1d4f37", "#256b50", "#2e7d5e", "#4caf82", "#86d4ab", "#d4f0e5"]
+      },
+      "growth-green-mid": {
+        "role": "primary-light",
+        "displayName": "Growth Green Mid",
+        "canonical": "#4caf82",
+        "tonalRamp": ["#0d2e1e", "#174a30", "#256b50", "#36896a", "#4caf82", "#6ecba0", "#9ddfc2", "#cff2e4"]
+      },
+      "growth-green-light": {
+        "role": "primary-surface",
+        "displayName": "Growth Green Light",
+        "canonical": "#e6f4ee",
+        "tonalRamp": ["#0a1f16", "#1d4f37", "#2e7d5e", "#4caf82", "#86d4ab", "#b8e8ce", "#d4f0e5", "#e6f4ee"]
+      },
+      "ink-black": {
+        "role": "neutral-dark",
+        "displayName": "Ink Black",
+        "canonical": "#0d0d0d",
+        "tonalRamp": ["#0d0d0d", "#1a1a18", "#2e2e2b", "#4a4a47", "#6b6b68", "#9e9e9a", "#c8c8c4", "#f2f2f0"]
+      },
+      "warm-parchment": {
+        "role": "neutral-bg",
+        "displayName": "Warm Parchment",
+        "canonical": "#f7f6f2",
+        "tonalRamp": ["#1a1a16", "#2e2e2a", "#4a4a45", "#6b6b65", "#9e9e98", "#c8c8c2", "#e8e8e0", "#f7f6f2"]
+      },
+      "canvas-white": {
+        "role": "surface",
+        "displayName": "Canvas White",
+        "canonical": "#ffffff",
+        "tonalRamp": ["#1a1a1a", "#2e2e2e", "#4a4a4a", "#6b6b6b", "#9e9e9e", "#c8c8c8", "#e8e8e8", "#ffffff"]
+      },
+      "border-grey": {
+        "role": "neutral-border",
+        "displayName": "Border Grey",
+        "canonical": "#e8e8e4",
+        "tonalRamp": ["#1a1a18", "#2e2e2b", "#4a4a47", "#6b6b68", "#9e9e9a", "#c8c8c4", "#e0e0dc", "#e8e8e4"]
+      },
+      "body-grey": {
+        "role": "neutral-text",
+        "displayName": "Body Grey",
+        "canonical": "#4a4a47",
+        "tonalRamp": ["#0d0d0c", "#1a1a18", "#2e2e2b", "#4a4a47", "#6b6b68", "#9e9e9a", "#c8c8c4", "#e8e8e4"]
+      },
+      "muted-grey": {
+        "role": "neutral-text-faint",
+        "displayName": "Muted Grey",
+        "canonical": "#9e9e9a",
+        "tonalRamp": ["#111110", "#242422", "#383836", "#4a4a47", "#6b6b68", "#9e9e9a", "#c8c8c4", "#e8e8e4"]
+      },
+      "loss-red": {
+        "role": "functional-negative",
+        "displayName": "Loss Red",
+        "canonical": "#f87171",
+        "tonalRamp": ["#2d0a0a", "#5a1414", "#8b1f1f", "#c0392b", "#e05252", "#f87171", "#faa5a5", "#fdd8d8"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headlines and page-hero headlines. One per page. A single em child renders in italic at Growth Green." },
+      "headline": { "displayName": "Headline", "purpose": "Section-level headlines and large display numbers. DM Serif Display's workhorse scale." },
+      "title": { "displayName": "Title", "purpose": "Card titles, course names, phase headings. Serif at body-adjacent scale." },
+      "body": { "displayName": "Body", "purpose": "All descriptive copy and lesson prose. Max line length ~520px (65ch)." },
+      "label": { "displayName": "Label", "purpose": "Section eyebrows, badge text, nav section headers. Always Inter. Always uppercase when used as eyebrow." }
+    },
+    "shadows": [
+      { "name": "hover-lift", "value": "0 8px 32px rgba(0,0,0,0.06)", "purpose": "Applied on hover to interactive cards. Pairs with translateY(-2px)." },
+      { "name": "content-float", "value": "0 4px 24px rgba(0,0,0,0.06)", "purpose": "Dashboard cards at rest. Exception to flat-by-default for application shell contexts." },
+      { "name": "hero-float", "value": "0 4px 16px rgba(0,0,0,0.07)", "purpose": "Hero annotation float cards. Lighter; they hover without competing." },
+      { "name": "hero-card", "value": "0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)", "purpose": "Portfolio mockup card in hero. Layered shadow for physical presence." },
+      { "name": "depth-anchor", "value": "0 32px 80px rgba(0,0,0,0.18), 0 8px 24px rgba(0,0,0,0.08)", "purpose": "Phone mockup only. Theatrical depth to anchor the hero section." },
+      { "name": "focus-ring", "value": "0 0 0 3px rgba(46,125,94,0.1)", "purpose": "Input and interactive element focus state. Green-tinted." },
+      { "name": "dropdown", "value": "0 12px 40px rgba(0,0,0,0.1)", "purpose": "Nav dropdown panel only." }
+    ],
+    "motion": [
+      { "name": "ease-standard", "value": "all 0.15s ease", "purpose": "Default state transition for buttons and interactive UI." },
+      { "name": "ease-card", "value": "all 0.2s ease", "purpose": "Card hover: border-color, transform, box-shadow." },
+      { "name": "hover-lift", "value": "translateY(-2px)", "purpose": "Vertical lift applied to cards and buttons on hover, alongside their shadow." },
+      { "name": "pulse-green", "value": "0 0 0 0 rgba(76,175,130,0.45) → 0 0 0 5px rgba(76,175,130,0) over 2.5s ease-in-out infinite", "purpose": "Green glow pulse for live-data status indicators." }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "480px" },
+      { "name": "tablet", "value": "768px" },
+      { "name": "desktop", "value": "1024px" },
+      { "name": "wide", "value": "1120px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button (Black)",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Default action button for marketing pages. Ink Black background, confident weight.",
+      "html": "<button class=\"ds-btn-primary\">Start learning free</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 20px; border-radius: 8px; font-family: Inter, system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; background: #0d0d0d; color: #ffffff; border: none; cursor: pointer; transition: all 0.15s ease; white-space: nowrap; } .ds-btn-primary:hover { background: #222222; transform: translateY(-1px); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(46,125,94,0.3); }"
+    },
+    {
+      "name": "Primary Button (Large)",
+      "kind": "button",
+      "refersTo": "button-primary-lg",
+      "description": "Large variant for hero CTAs. Same ink-black, roomier padding.",
+      "html": "<button class=\"ds-btn-primary-lg\">Get started free</button>",
+      "css": ".ds-btn-primary-lg { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 14px 28px; border-radius: 10px; font-family: Inter, system-ui, sans-serif; font-size: 0.95rem; font-weight: 600; background: #0d0d0d; color: #ffffff; border: none; cursor: pointer; transition: all 0.15s ease; white-space: nowrap; } .ds-btn-primary-lg:hover { background: #222222; transform: translateY(-1px); } .ds-btn-primary-lg:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(46,125,94,0.3); }"
+    },
+    {
+      "name": "Green CTA Button",
+      "kind": "button",
+      "refersTo": "button-green",
+      "description": "Growth Green button for CTA banners and lesson completion actions.",
+      "html": "<button class=\"ds-btn-green\">Start this lesson</button>",
+      "css": ".ds-btn-green { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 20px; border-radius: 8px; font-family: Inter, system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; background: #2e7d5e; color: #ffffff; border: none; cursor: pointer; transition: all 0.15s ease; white-space: nowrap; } .ds-btn-green:hover { background: #256b50; transform: translateY(-1px); } .ds-btn-green:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(46,125,94,0.25); }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary action alongside a black primary. Quiet at rest, assertive on hover.",
+      "html": "<button class=\"ds-btn-outline\">Browse courses</button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 20px; border-radius: 8px; font-family: Inter, system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; background: transparent; color: #0d0d0d; border: 1.5px solid #e8e8e4; cursor: pointer; transition: all 0.15s ease; white-space: nowrap; } .ds-btn-outline:hover { border-color: #0d0d0d; } .ds-btn-outline:focus-visible { outline: none; border-color: #2e7d5e; box-shadow: 0 0 0 3px rgba(46,125,94,0.1); }"
+    },
+    {
+      "name": "Standard Card",
+      "kind": "card",
+      "refersTo": "card-standard",
+      "description": "Default content card. Flat at rest; lifts on hover. Border signals interactivity.",
+      "html": "<a class=\"ds-card\" href=\"#\"><div class=\"ds-card__tag\">FUNDAMENTALS</div><div class=\"ds-card__title\">What is an ISA?</div><p class=\"ds-card__body\">Learn the basics of Individual Savings Accounts and why they matter for your future.</p><div class=\"ds-card__meta\">4 lessons · 20 min</div></a>",
+      "css": ".ds-card { display: block; background: #ffffff; border-radius: 16px; padding: 24px; border: 1.5px solid #e8e8e4; transition: all 0.2s ease; text-decoration: none; color: inherit; } .ds-card:hover { border-color: #0d0d0d; transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.06); } .ds-card__tag { display: inline-block; font-family: Inter, system-ui, sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: #e6f4ee; color: #2e7d5e; padding: 3px 10px; border-radius: 99px; margin-bottom: 14px; } .ds-card__title { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.3rem; line-height: 1.2; margin-bottom: 8px; color: #0d0d0d; } .ds-card__body { font-family: Inter, system-ui, sans-serif; font-size: 0.85rem; color: #4a4a47; line-height: 1.65; margin-bottom: 16px; } .ds-card__meta { font-family: Inter, system-ui, sans-serif; font-size: 0.75rem; color: #9e9e9a; } .ds-card:focus-visible { outline: none; border-color: #2e7d5e; box-shadow: 0 0 0 3px rgba(46,125,94,0.1); }"
+    },
+    {
+      "name": "Featured Card (Dark)",
+      "kind": "card",
+      "refersTo": "card-featured",
+      "description": "Ink Black variant used to anchor a card grid. One per grid maximum.",
+      "html": "<a class=\"ds-card-featured\" href=\"#\"><div class=\"ds-card-featured__tag\">FEATURED</div><div class=\"ds-card-featured__title\">The Simulator</div><p class=\"ds-card-featured__body\">Trade real stocks with £10,000 of virtual money. No risk, real market data.</p><div class=\"ds-card-featured__meta\">Live market prices</div></a>",
+      "css": ".ds-card-featured { display: block; background: #0d0d0d; border-radius: 16px; padding: 24px; border: 1.5px solid #0d0d0d; transition: all 0.2s ease; text-decoration: none; color: #ffffff; } .ds-card-featured__tag { display: inline-block; font-family: Inter, system-ui, sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.8); padding: 3px 10px; border-radius: 99px; margin-bottom: 14px; } .ds-card-featured__title { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.3rem; line-height: 1.2; margin-bottom: 8px; color: #ffffff; } .ds-card-featured__body { font-family: Inter, system-ui, sans-serif; font-size: 0.85rem; color: rgba(255,255,255,0.65); line-height: 1.65; margin-bottom: 16px; } .ds-card-featured__meta { font-family: Inter, system-ui, sans-serif; font-size: 0.75rem; color: rgba(255,255,255,0.5); }"
+    },
+    {
+      "name": "Category Badge",
+      "kind": "chip",
+      "refersTo": null,
+      "description": "Course and content category tag. Green-light background, Growth Green text, pill radius.",
+      "html": "<span class=\"ds-badge\">ISA Basics</span>",
+      "css": ".ds-badge { display: inline-block; font-family: Inter, system-ui, sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: #e6f4ee; color: #2e7d5e; padding: 3px 10px; border-radius: 99px; white-space: nowrap; }"
+    },
+    {
+      "name": "Form Input",
+      "kind": "input",
+      "refersTo": null,
+      "description": "Standard text field. Flat border at rest; Growth Green focus ring.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-field__label\" for=\"ds-input-demo\">Email address</label><input class=\"ds-input\" id=\"ds-input-demo\" type=\"email\" placeholder=\"you@university.ac.uk\"></div>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 8px; } .ds-field__label { font-family: Inter, system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; color: #0d0d0d; } .ds-input { width: 100%; padding: 10px 14px; border: 1.5px solid #e8e8e4; border-radius: 10px; font-family: Inter, system-ui, sans-serif; font-size: 0.9rem; color: #0d0d0d; background: #ffffff; transition: border-color 0.15s, box-shadow 0.15s; outline: none; } .ds-input::placeholder { color: #9e9e9a; } .ds-input:focus { border-color: #2e7d5e; box-shadow: 0 0 0 3px rgba(46,125,94,0.1); }"
+    },
+    {
+      "name": "Section Eyebrow",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Green uppercase label above every major section headline. The Flourish section entry pattern.",
+      "html": "<p class=\"ds-eyebrow\">Built for UK students</p>",
+      "css": ".ds-eyebrow { font-family: Inter, system-ui, sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #2e7d5e; margin-bottom: 12px; }"
+    },
+    {
+      "name": "Nav Link (Active)",
+      "kind": "nav",
+      "refersTo": null,
+      "description": "Public marketing nav item. Active state shown. Inter weight contrast signals current page.",
+      "html": "<nav class=\"ds-nav-demo\"><a class=\"ds-nav-link\" href=\"#\">Courses</a><a class=\"ds-nav-link ds-nav-link--active\" href=\"#\">Tools</a><a class=\"ds-nav-link\" href=\"#\">Simulator</a></nav>",
+      "css": ".ds-nav-demo { display: flex; align-items: center; gap: 4px; } .ds-nav-link { font-family: Inter, system-ui, sans-serif; font-size: 0.875rem; font-weight: 500; color: #4a4a47; text-decoration: none; padding: 6px 12px; border-radius: 8px; transition: all 0.15s ease; } .ds-nav-link:hover { color: #0d0d0d; background: #f2f2f0; } .ds-nav-link--active { color: #0d0d0d; font-weight: 600; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Confident Starter",
+    "overview": "Flourish exists to turn financial anxiety into financial competence. The visual system reflects that mission directly: Inter carries the structural weight of the interface, moving with clarity and efficiency, while DM Serif Display appears at moments that matter — the headline that reframes the stakes, the number that makes the lesson land, the quote from a student who got it. The system is light by default because a student between lectures in a campus café deserves a screen that doesn't fight the ambient light. Growth Green is momentum, not decoration; its scarcity makes it mean something.\n\nThe palette rejects both poles of fintech design. No corporate navy-and-serif banking gravity. No neon-on-dark gamification noise. Flourish sits in the space between: warm enough to feel personal, structured enough to feel credible. Flat surfaces get out of the way; shadows are earned, appearing only when something truly lifts above the page. Borders at rest are quiet; hover reveals the green or black that was there all along.",
+    "keyCharacteristics": [
+      "DM Serif Display reserved for display, headline, and quote contexts only; Inter for all other UI",
+      "Growth Green appears on ≤20% of any screen; its scarcity carries all the signalling weight",
+      "Flat-by-default surfaces; elevation is a state response, not a base style",
+      "Light mode primary; dark mode for intentionally atmospheric sections (footer, stats strip, simulator hero)",
+      "Warm Parchment and Canvas White alternate at page and card level, never mixed at the same depth"
+    ],
+    "rules": [
+      { "name": "The Momentum Rule", "body": "Growth Green appears on at most 20% of any given screen. Every use is a signal. Dilute it and it becomes wallpaper.", "section": "colors" },
+      { "name": "The Two-Background Rule", "body": "Any given page section uses either Warm Parchment or Canvas White, not both at the same visual layer. Alternating sections between the two creates rhythm without color.", "section": "colors" },
+      { "name": "The Serif Reserve Rule", "body": "DM Serif Display appears on headlines (Display, Headline, Title), display numbers, testimonial quotes, and CTA section headlines. Not on labels, inputs, nav items, buttons, or body copy.", "section": "typography" },
+      { "name": "The Italic Signal", "body": "An em inside a DM Serif headline renders in italic with Growth Green color. One emphasis per headline maximum.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "A surface at rest has no shadow. If a card seems to need a resting shadow for visual separation, the background contrast or border is wrong — fix those first.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use DM Serif Display for display, headline, title, quote, and display number contexts only.",
+      "Do use a single em inside a DM Serif headline for italic emphasis at Growth Green. One per headline.",
+      "Do use section eyebrows: Growth Green, Inter, uppercase, tracked, before every major headline.",
+      "Do use 1.5px Border Grey borders on cards at rest; let hover reveal the personality (green or black).",
+      "Do use Ink Black and Growth Green as section background alternatives for atmospheric sections.",
+      "Do keep body copy to a max width of ~520px (roughly 65ch) on desktop.",
+      "Do keep Growth Green on ≤20% of any surface.",
+      "Do meet WCAG 2.1 AA contrast: 4.5:1 for body, 3:1 for large text and UI components."
+    ],
+    "donts": [
+      "Don't use traditional bank aesthetics: corporate navy, formal serif body text, institutional tone.",
+      "Don't use generic SaaS patterns: purple gradient heroes, glassmorphism, hero-metric layouts, identical card grids.",
+      "Don't use background-clip gradient text. Headlines use a solid color.",
+      "Don't use border-left or border-right greater than 1px as a decorative accent stripe on cards or list items.",
+      "Don't apply shadows to cards at rest on marketing pages.",
+      "Don't use DM Serif Display for buttons, labels, nav items, inputs, or form copy.",
+      "Don't use Loss Red (#f87171) for anything other than a negative portfolio delta in the simulator.",
+      "Don't use enableSystem in the theme provider or default to dark mode based on OS preference."
+    ]
+  }
+}

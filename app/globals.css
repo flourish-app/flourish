@@ -4357,4 +4357,65 @@ html.dark .ttools-tips,
 html.dark .ttools-help { background: var(--grey-1); border-color: var(--grey-2); }
 html.dark .ttools-popular__item + .ttools-popular__item,
 html.dark .ttools-tips__item + .ttools-tips__item { border-color: var(--grey-2); }
+
+/* ─── Guest save banner ──────────────────────────────────────────────────── */
+@keyframes slideUpBanner {
+  0%   { transform: translateY(100%);   opacity: 0; }
+  60%  { transform: translateY(-10px);  opacity: 1; }
+  78%  { transform: translateY(4px);    opacity: 1; }
+  90%  { transform: translateY(-3px);   opacity: 1; }
+  100% { transform: translateY(0);      opacity: 1; }
+}
+
+.guest-save-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  background: #fff;
+  border-top: 2px solid rgba(76,175,130,0.5);
+  box-shadow: 0 -4px 24px rgba(76,175,130,0.18), 0 -1px 6px rgba(76,175,130,0.12);
+  animation: slideUpBanner 0.3s ease;
+}
+.guest-save-banner__icon { font-size: 18px; flex-shrink: 0; }
+.guest-save-banner__text {
+  flex: 1;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--black);
+  margin: 0;
+}
+.guest-save-banner__cta {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  background: var(--green);
+  color: #fff;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+.guest-save-banner__cta:hover { background: #3a9e70; }
+.guest-save-banner__dismiss {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--grey-3);
+  padding: 0 2px;
+  transition: color 0.15s;
+}
+.guest-save-banner__dismiss:hover { color: var(--black); }
+
+html.dark .guest-save-banner { background: var(--grey-1); border-color: rgba(76,175,130,0.4); box-shadow: 0 -4px 24px rgba(76,175,130,0.15), 0 -1px 6px rgba(76,175,130,0.1); }
+html.dark .guest-save-banner__text { color: var(--black); }
 html.dark .ttools-help__btn { background: var(--grey-1); border-color: var(--grey-2); }
