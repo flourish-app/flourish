@@ -77,7 +77,7 @@ All CSS is in `app/globals.css` — one large file using custom classes (loosely
 ### Components
 
 `components/Nav.tsx` — public marketing navbar (auth-aware: shows Dashboard link when signed in).  
-`components/DashboardSidebar.tsx` — dashboard sidebar with mobile drawer; includes `ThemeToggle`.  
+`components/DashboardSidebar.tsx` — dashboard sidebar with mobile drawer; includes `ThemeToggle`. Renders a `.sidebar__promo-card` ("All tools are 100% free") only when `pathname === '/dashboard/tools'`.  
 `components/ThemeProvider.tsx` and `components/ThemeToggle.tsx` — theme management.
 
 #### Component directories
@@ -100,14 +100,28 @@ All components follow a **container/presentational** split: state, Supabase call
 - `SignupStep1.tsx` (`'use client'`) — step 1 of signup (name, age range, uni/course)
 - `SignupStep2.tsx` (`'use client'`) — step 2 of signup (email, password + strength meter)
 - `SignupEmailSent.tsx` — confirmation screen (no client directive)
+- `SignupBenefitsPanel.tsx` — left marketing panel shown on **all** signup steps; always rendered alongside the form in the two-column `signup-step2-layout`
 - `ForgotPasswordForm.tsx` (`'use client'`) — forgot password email input
 - `ForgotPasswordSent.tsx` — sent confirmation screen (no client directive)
 - `ResetPasswordForm.tsx` (`'use client'`) — new password + confirm fields
+
+**Signup layout** — `app/(auth)/signup/page.tsx` uses a single return path with `.signup-step2-layout` (two columns) throughout all steps: `SignupBenefitsPanel` always on the left; step 1, step 2, and email-sent views swap in on the right. Progress bar is always rendered in `.signup-step2-form`.
 
 **`components/CourseOverview/`** — used by both `(main)/courses/` pages and `dashboard/courses/` pages.
 - `CourseOutcomes`, `CourseForGrid`, `CourseFaq`, `CourseRelated` — shared UI blocks; `RelatedCourse.href` is populated with the appropriate path by each consumer.
 
 **`components/DashboardCourses/`** — `CourseCard`, `ComingSoonCard` used in dashboard course listing.
+
+### Dashboard Tools page
+
+`app/dashboard/tools/page.tsx` is a full directory page with:
+- **Hero** — eyebrow, headline, badge strip, stats box (4 tools, £0 cost, 0 sign-up, 10K+ students)
+- **Controls** — category tabs (All / Calculators / Trackers / Profilers), search input, sort dropdown (Most Popular / A–Z / Newest), grid/list view toggle
+- **Tool cards** — `dtool-card` / `dtool-card--list`; filtered and sorted via `useMemo`
+- **Right aside** (`tools-page__aside`, 310 px column) — Featured tool with inline SVG mini-chart (`ttools-featured`), Popular right now ranked list (`ttools-popular`), Tips & learning (`ttools-tips`), Need help? (`ttools-help`)
+- Layout: `.tools-page { display: grid; grid-template-columns: 1fr 310px }` with `align-items: start`
+
+All `ttools-*` and `tools-page__*` and `dtool-card*` classes are defined in `globals.css`.
 
 ### Environment variables
 

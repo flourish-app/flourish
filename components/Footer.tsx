@@ -51,7 +51,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="footer__bottom">
-          <div>© 2026 Flourish. All rights reserved.</div>
+          <div>© 2026 Flourish Interactive Limited, doing business as "Flourish". All rights reserved.</div>
           <div className="footer__disclaimer">
             Flourish is an educational platform only. We do not provide financial advice. No real money is involved in simulations. All investment decisions should be made based on your own research or advice from a qualified FCA-regulated adviser. Capital at risk.
           </div>

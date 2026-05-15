@@ -36,6 +36,7 @@ const NAV: { section?: string; items: { href: string; label: string }[] }[] = [
   {
     section: 'Tools',
     items: [
+      { href: '/dashboard/tools', label: 'All tools' },
       { href: '/dashboard/tools/compound-calculator', label: 'Compound calculator' },
       { href: '/dashboard/tools/isa-tracker', label: 'ISA tracker' },
       { href: '/dashboard/tools/risk-profiler', label: 'Risk profiler' },
@@ -80,6 +81,17 @@ function SidebarContent({ onNav }: { onNav?: () => void }) {
           </div>
         ))}
       </nav>
+
+      {pathname === '/dashboard/tools' && (
+        <div className="sidebar__promo-card">
+          <p className="sidebar__promo-label">Understand your money</p>
+          <p className="sidebar__promo-title">All tools are 100% free</p>
+          <p className="sidebar__promo-sub">Open, use and learn.</p>
+          <div className="sidebar__promo-graphic" aria-hidden="true">
+            <span>🧮</span><span>📈</span>
+          </div>
+        </div>
+      )}
 
       <div className="sidebar__footer">
         <div className="sidebar__footer-row">
