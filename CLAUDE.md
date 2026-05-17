@@ -66,6 +66,7 @@ Key tables:
 - `stock_prices` — cached prices written by the `get-prices` edge function; 30s TTL
 - `portfolio_snapshots` — daily EOD snapshots written by the cron job
 - `user_habits` — event-driven behavioural tracking (`id`, `user_id`, `event_type`, `metadata` jsonb, `occurred_at`); RLS: users read/write own rows only. Migration: `supabase/migrations/20260515_user_habits.sql`
+- `lesson_completions` — source of truth for completed lessons, dashboard lesson totals, streak count, weekly streak dots, and weekly XP summaries. Do not derive dashboard streak state from `user_habits`.
 
 ### Simulator
 
@@ -129,6 +130,8 @@ All components follow a **container/presentational** split: state, Supabase call
 
 **`components/DashboardCourses/`** — `CourseCard`, `ComingSoonCard` used in dashboard course listing.
 
+**`components/Dashboard/ProgressStatsCard.tsx`** — presentational dashboard progress card. Keep data derivation in `app/dashboard/page.tsx`; pass lesson total, streak, weekly XP, level state, and `weekDays` in as props. Visual pattern is compact mockup-style: trend icon header, small weekly XP pill, three icon stat columns, hex level badge, XP stack, progress bar, and unchanged streak dots. CSS lives under `.psc*` in `app/globals.css`; preserve compact card height relative to neighbouring dashboard cards.
+
 ### Course registry
 
 **`lib/curriculum.ts` is the single source of truth for all course metadata.** Do not hardcode course data in page files.
@@ -164,6 +167,15 @@ Event catalogue (`HabitMeta`):
 **Guest engagement path** — when `enabled = false` (unauthenticated), the hook accepts `onGuestEngaged?: () => void` and `guestEngageMs?: number` (default 4000). The callback fires **once**, 4 s after the **first** slider interaction (timer is not reset by subsequent changes). Use this to show a signup nudge without blocking the UI. `recordHabit` itself silently no-ops when there is no session — no console errors for guests.
 
 **`components/tools/GuestSaveBanner.tsx`** — fixed-position bottom banner shown to guests after engagement. Props: `{ onDismiss: () => void }`. Links to `/start-learning`. Styled with `.guest-save-banner*` classes (green glow border + `slideUpBanner` bounce animation defined in `globals.css`). Rendered conditionally in `CompoundCalculator`, `ISATracker`, `LISACalculator` via local `showBanner` state wired to `onGuestEngaged`.
+
+### Dashboard progress data
+
+`app/dashboard/page.tsx` reads `lesson_completions.completed_at` for progress analytics. `components/Dashboard/utils.ts` owns the date logic:
+- `computeStreak(eventTimestamps)` — consecutive completion-day streak, London-local.
+- `computeWeekDays(eventTimestamps)` — Monday-to-Sunday dot state, London-local, with future days marked separately.
+- `countEventsThisWeek(eventTimestamps)` — completion count from Monday through today, London-local.
+
+Use `Europe/London` date keys for dashboard streak/progress calculations so Sunday and UK-local day boundaries render correctly. `user_habits` remains for behavioural analytics only; it is not reliable enough for completed-lesson UI.
 
 ### Recommendation service
 

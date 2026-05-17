@@ -1,9 +1,12 @@
+import { ArrowUpRight, BookOpen, Flame, Star, TrendingUp } from 'lucide-react'
+
 type WeekDay = { done: boolean; future: boolean }
 
 type Props = {
   totalLessonsDone: number
   streak: number
   totalXp: number
+  weeklyXp: number
   level: number
   levelTitle: string
   nextLevelXp: number | null
@@ -14,25 +17,45 @@ type Props = {
 const DAY_LABELS = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
 
 export default function ProgressStatsCard({
-  totalLessonsDone, streak, totalXp,
+  totalLessonsDone, streak, totalXp, weeklyXp,
   level, levelTitle, nextLevelXp, progressPct,
   weekDays,
 }: Props) {
   return (
     <section className="dashboard-card psc">
-      <p className="dashboard-card__eyebrow">Your progress</p>
+      <div className="psc__header">
+        <div className="psc__title-row">
+          <span className="psc__title-icon" aria-hidden="true">
+            <TrendingUp size={19} strokeWidth={2.6} />
+          </span>
+          <h2 className="psc__title">Your progress</h2>
+        </div>
+        <div className="psc__week-pill" aria-label={`${weeklyXp} XP earned this week`}>
+          <ArrowUpRight size={12} strokeWidth={2.7} />
+          <span>+{weeklyXp} XP this week</span>
+        </div>
+      </div>
 
       {/* Stats */}
       <div className="psc__stats">
         <div className="psc__stat">
+          <span className="psc__stat-icon" aria-hidden="true">
+            <BookOpen size={18} strokeWidth={2.1} />
+          </span>
           <span className="psc__stat-value">{totalLessonsDone}</span>
           <span className="psc__stat-label">Lessons<br />done</span>
         </div>
         <div className="psc__stat">
+          <span className="psc__stat-icon" aria-hidden="true">
+            <Flame size={18} strokeWidth={2.1} />
+          </span>
           <span className="psc__stat-value">{streak}</span>
           <span className="psc__stat-label">Day<br />streak</span>
         </div>
         <div className="psc__stat">
+          <span className="psc__stat-icon" aria-hidden="true">
+            <Star size={18} strokeWidth={2.1} />
+          </span>
           <span className="psc__stat-value">{totalXp}</span>
           <span className="psc__stat-label">XP<br />earned</span>
         </div>
@@ -40,14 +63,32 @@ export default function ProgressStatsCard({
 
       {/* Level + bar */}
       <div className="psc__divider" />
-      <div className="psc__level-row">
-        <span className="psc__level-name">Level {level} · {levelTitle}</span>
-        {nextLevelXp !== null && (
-          <span className="psc__level-xp">{totalXp} / {nextLevelXp} XP</span>
-        )}
-      </div>
-      <div className="psc__bar">
-        <div className="psc__bar-fill" style={{ width: `${progressPct}%` }} />
+      <div className="psc__level">
+        <div className="psc__level-row">
+          <div className="psc__level-badge" aria-label={`Level ${level}`}>
+            <span>Lv. {level}</span>
+          </div>
+          <div className="psc__level-copy">
+            <span className="psc__level-name">{levelTitle}</span>
+            <span className="psc__level-sub">Level {level}</span>
+          </div>
+          <div className="psc__level-xp">
+            {nextLevelXp !== null ? (
+              <>
+                <span>{totalXp} / {nextLevelXp} XP</span>
+                <strong>{progressPct}% to Level {level + 1}</strong>
+              </>
+            ) : (
+              <>
+                <span>{totalXp} XP</span>
+                <strong>Top level</strong>
+              </>
+            )}
+          </div>
+        </div>
+        <div className="psc__bar">
+          <div className="psc__bar-fill" style={{ width: `${progressPct}%` }} />
+        </div>
       </div>
 
       {/* Streak section */}

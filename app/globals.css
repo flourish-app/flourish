@@ -2677,51 +2677,175 @@ html.dark .lesson-toast { background: #f0efe9; color: var(--black); }
 }
 
 /* ── Progress Stats Card (psc) ── */
+.psc {
+  padding: 24px 24px;
+  container-type: inline-size;
+}
+.psc__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 17px;
+}
+.psc__title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.psc__title-icon,
+.psc__stat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #075a39;
+  background: linear-gradient(135deg, #edf6f1 0%, #f7faf8 100%);
+}
+.psc__title-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+.psc__title {
+  min-width: 0;
+  color: var(--black);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+.psc__week-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 24px;
+  padding: 0 8px;
+  border: 1.5px solid rgba(46, 125, 94, 0.2);
+  border-radius: 99px;
+  background: rgba(230, 244, 238, 0.36);
+  color: var(--green);
+  font-size: 0.66rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
 .psc__stats {
   display: flex;
   gap: 0;
-  margin: 16px 0 0;
+  margin: 0;
 }
 .psc__stat {
   flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 4px;
+  text-align: center;
+  position: relative;
+  min-width: 0;
+}
+.psc__stat + .psc__stat::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 6px;
+  width: 1.5px;
+  background: var(--grey-2);
+}
+.psc__stat-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  margin-bottom: 2px;
 }
 .psc__stat-value {
-  font-size: 2rem;
-  font-weight: 600;
-  color: var(--black);
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: #075a39;
   line-height: 1;
+  letter-spacing: 0;
 }
 .psc__stat-label {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   color: var(--grey-3);
-  line-height: 1.35;
+  line-height: 1.25;
 }
 
 .psc__divider {
   height: 1px;
   background: var(--grey-2);
-  margin: 18px 0 14px;
+  margin: 14px 0 11px;
+}
+.psc__level {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
 }
 .psc__level-row {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
-  gap: 8px;
-  margin-bottom: 8px;
+  align-items: center;
+  gap: 9px;
+}
+.psc__level-badge {
+  width: 42px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  color: var(--white);
+  background: #0f6a45;
+  clip-path: polygon(50% 0, 92% 23%, 92% 76%, 50% 100%, 8% 76%, 8% 23%);
+  box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.14);
+}
+.psc__level-badge span {
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+.psc__level-copy {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
 }
 .psc__level-name {
-  font-size: 0.8rem;
-  color: var(--grey-4);
-  font-weight: 500;
+  color: var(--black);
+  font-size: 0.92rem;
+  font-weight: 800;
+  line-height: 1.1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.psc__level-sub {
+  color: var(--grey-3);
+  font-size: 0.75rem;
+  line-height: 1.1;
 }
 .psc__level-xp {
-  font-size: 0.78rem;
-  color: var(--grey-3);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  color: var(--black);
+  font-size: 0.83rem;
+  line-height: 1;
   white-space: nowrap;
   flex-shrink: 0;
+}
+.psc__level-xp strong {
+  color: var(--green);
+  font-size: 0.72rem;
+  font-weight: 800;
 }
 .psc__bar {
   height: 7px;
@@ -2737,8 +2861,8 @@ html.dark .lesson-toast { background: #f0efe9; color: var(--black); }
 }
 
 .psc__streak {
-  margin-top: 18px;
-  padding-top: 16px;
+  margin-top: 14px;
+  padding-top: 12px;
   border-top: 1px solid var(--grey-2);
 }
 .psc__streak-head {
@@ -2754,10 +2878,10 @@ html.dark .lesson-toast { background: #f0efe9; color: var(--black); }
   color: var(--black);
 }
 .psc__streak-sub {
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   color: var(--grey-3);
-  margin: 0 0 14px;
-  line-height: 1.4;
+  margin: 0 0 10px;
+  line-height: 1.22;
 }
 .psc__dots {
   display: flex;
@@ -2778,8 +2902,8 @@ html.dark .lesson-toast { background: #f0efe9; color: var(--black); }
   letter-spacing: 0.02em;
 }
 .psc__dot {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -2790,7 +2914,57 @@ html.dark .lesson-toast { background: #f0efe9; color: var(--black); }
 .psc__dot--future { background: var(--grey-1); border: 1.5px solid var(--grey-2); }
 
 html.dark .psc__stat-value { color: var(--white); }
+html.dark .psc__title { color: #f0efe9; }
+html.dark .psc__title-icon,
+html.dark .psc__stat-icon { background: var(--green-light); color: var(--green-mid); }
+html.dark .psc__week-pill { background: var(--green-light); border-color: rgba(76, 175, 130, 0.28); color: var(--green-mid); }
+html.dark .psc__level-name,
+html.dark .psc__level-xp { color: #f0efe9; }
 html.dark .psc__dot--future { background: rgba(255,255,255,0.04); }
+
+@container (max-width: 310px) {
+  .psc {
+    padding: 18px 20px;
+  }
+  .psc__header {
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .psc__title-row { gap: 8px; }
+  .psc__title-icon {
+    width: 30px;
+    height: 30px;
+  }
+  .psc__title { font-size: 1rem; }
+  .psc__week-pill {
+    min-height: 23px;
+    padding: 0 7px;
+    font-size: 0.62rem;
+  }
+  .psc__stat-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+  }
+  .psc__stat-value { font-size: 1.85rem; }
+  .psc__stat-label { font-size: 0.72rem; }
+  .psc__level-row {
+    gap: 7px;
+  }
+  .psc__level-badge {
+    width: 36px;
+    height: 40px;
+  }
+  .psc__level-badge span { font-size: 0.64rem; }
+  .psc__level-name { font-size: 0.82rem; }
+  .psc__level-sub { font-size: 0.68rem; }
+  .psc__level-xp {
+    font-size: 0.72rem;
+  }
+  .psc__level-xp strong {
+    font-size: 0.64rem;
+  }
+}
 
 /* ── Portfolio Preview Card (pvc) ── */
 .pvc__value-row {

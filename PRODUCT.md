@@ -43,6 +43,8 @@ Structured multi-course programmes that guide users from beginner to confident i
 
 **Progression mechanic:** Completing a lesson awards XP (10–25 per lesson), fires a green pill toast ("🎉 +N XP claimed"), and auto-advances to the next lesson. Last lesson in a course advances to first lesson of the next course; last lesson of the path returns to the path overview. XP integrates with the existing `total_xp` / level system on the user profile.
 
+**Progress dashboard:** The main dashboard progress card shows total lessons done, current day streak, total XP, weekly XP, level progress, and Monday-to-Sunday streak dots. Completed lessons (`lesson_completions`) are the source of truth for these metrics. Streaks and weekly dots are calculated against `Europe/London` dates so UK-local day boundaries and Sunday completions display correctly.
+
 **Dashboard entry point:** `PathSelector` shows the three featured paths below the main dashboard grid. Each card links to the path overview at `/dashboard/paths/[pathId]`. Path overview shows an editorial header (serif title, description, tags) and a full course-and-lesson manifest with time + XP per lesson. Lesson reader is a distraction-free reading column at `/dashboard/paths/[pathId]/[courseId]/[lessonId]`.
 
 ## Accessibility & Inclusion

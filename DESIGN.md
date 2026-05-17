@@ -216,6 +216,16 @@ Components are confident and direct. Buttons invite clicking. Cards have presenc
 - Nav items: Inter 0.875rem weight 500, Body Grey. Hover: Canvas White background, Ink Black text.
 - **Active item:** Growth Green text, Growth Green Light background, 3px Growth Green `border-left`. This is the single system-level use of a side-stripe border: it is functional navigation state, not decorative.
 
+### Dashboard Progress Card (`.psc`)
+Compact application card that translates learning progress into a quick visual dashboard read. Use Inter throughout; this is operational UI, not editorial typography.
+
+- **Header:** circular Growth Green Light trend icon, bold `Your progress` title, and a compact bordered weekly XP pill. The pill must shrink before wrapping or overlapping.
+- **Stats:** three equal metric columns with small green icon tiles, Growth Green numeric values, muted two-line labels, and 1.5px vertical dividers between columns.
+- **Level:** hex Growth Green badge on the left, level title/subtitle in the middle, XP stack plus `% to Level N` on the right, followed by a 7px green progress bar.
+- **Streak:** flame label, supporting copy, and Monday-to-Sunday dots. Completed days use Growth Green circles with tick icons; empty/current past days are grey; future days are quiet outlined grey.
+- **Sizing:** preserve compact dashboard-card height relative to neighbouring cards. Add breathing room with modest padding and gaps only; do not return to oversized hero-like spacing.
+- **Responsive:** `.psc` uses container-aware CSS. Header, XP pill, level title, and XP stack must not overlap in narrow dashboard columns.
+
 ### Signature Component: Section Eyebrow
 The Flourish eyebrow pattern (found above every major headline) is Growth Green text, Inter 0.7–0.8rem, weight 700, uppercase, letter-spacing 0.08em. It precedes the headline by 12px margin. This pattern consistently signals "new section, new idea" across both marketing and dashboard surfaces.
 

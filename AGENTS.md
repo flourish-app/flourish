@@ -56,6 +56,7 @@ app/
 - `stock_prices` — cached prices written by the `get-prices` edge function; 30s TTL
 - `portfolio_snapshots` — daily EOD snapshots written by the cron job
 - `user_habits` — event-driven behavioural tracking (`id`, `user_id`, `event_type`, `metadata` jsonb, `occurred_at`); RLS: users read/write own rows only. Migration: `supabase/migrations/20260515_user_habits.sql`
+- `lesson_completions` — source of truth for completed lessons, dashboard lesson totals, streak count, weekly streak dots, and weekly XP summaries. Do not derive dashboard streak state from `user_habits`.
 
 ### Simulator Logic
 - Shared types and formatting: `lib/simulator.ts` — `SimPortfolio`, `SimHolding`, `SimStock`, `PriceData`, `SimTransaction`, `formatPrice`, `formatPnl`, `formatChangePct`. Import from here, don't redefine.
@@ -107,6 +108,8 @@ All components follow a **container/presentational** split: state, Supabase call
 
 **`components/DashboardCourses/`** — `CourseCard`, `ComingSoonCard` for the dashboard course listing.
 
+**`components/Dashboard/ProgressStatsCard.tsx`** — presentational dashboard progress card. Keep data derivation in `app/dashboard/page.tsx`; pass lesson total, streak, weekly XP, level state, and `weekDays` in as props. Visual pattern is compact mockup-style: trend icon header, small weekly XP pill, three icon stat columns, hex level badge, XP stack, progress bar, and unchanged streak dots. CSS lives under `.psc*` in `app/globals.css`; preserve compact card height relative to neighbouring dashboard cards.
+
 **`components/Dashboard/PathSelector.tsx`** — server component on the main dashboard page below `dashboard__grid`. Shows `featuredPaths` as horizontal-scroll cards on mobile, 3-column grid on desktop. CSS: `.path-selector`, `.ps-card`, `.ps-card__body` (`min-width: 0` required), `.ps-card__footer`.
 
 **`components/tools/GuestSaveBanner.tsx`** — fixed-position bottom banner for unauthenticated users after engagement. Props: `{ onDismiss: () => void }`. Links to `/start-learning`. CSS: `.guest-save-banner*` with `slideUpBanner` animation.
@@ -135,6 +138,15 @@ Event catalogue (`HabitMeta`):
 - `tool_open` — `{ tool }`
 
 **`hooks/useDebouncedHabit.ts`** — fires `recordHabit('calc_use', { calculator, ...values })` after 3s of inactivity; deduplicates via JSON snapshot; skips mount; no-ops when `enabled = false`. Wired into `CompoundCalculator`, `ISATracker`, `LISACalculator`. Guest mode: accepts `onGuestEngaged?: () => void` (fires once, 4s after first interaction) and `guestEngageMs?` (default 4000).
+
+## Dashboard Progress Data
+
+`app/dashboard/page.tsx` reads `lesson_completions.completed_at` for progress analytics. `components/Dashboard/utils.ts` owns the date logic:
+- `computeStreak(eventTimestamps)` — consecutive completion-day streak, London-local.
+- `computeWeekDays(eventTimestamps)` — Monday-to-Sunday dot state, London-local, with future days marked separately.
+- `countEventsThisWeek(eventTimestamps)` — completion count from Monday through today, London-local.
+
+Use `Europe/London` date keys for dashboard streak/progress calculations so Sunday and UK-local day boundaries render correctly. `user_habits` remains for behavioural analytics only; it is not reliable enough for completed-lesson UI.
 
 ## Recommendation Service
 

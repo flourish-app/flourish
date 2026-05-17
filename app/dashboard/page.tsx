@@ -7,7 +7,7 @@ import type { Profile } from '@/lib/supabase'
 import { lessons as ifsLessons } from '@/lib/lessons/investing-from-scratch'
 import { computeLevel, XP } from '@/lib/xp'
 import { type PortfolioPreview, type CompletionRow } from '@/components/Dashboard/types'
-import { computeStreak } from '@/components/Dashboard/utils'
+import { computeStreak, computeWeekDays, countEventsThisWeek } from '@/components/Dashboard/utils'
 import DashboardHeader       from '@/components/Dashboard/DashboardHeader'
 import ContinueLearningCard  from '@/components/Dashboard/ContinueLearningCard'
 import ProgressStatsCard     from '@/components/Dashboard/ProgressStatsCard'
@@ -45,7 +45,6 @@ export default function DashboardPage() {
   const [portfolioTotal, setPortfolioTotal] = useState<number | null>(null)
   const [loading, setLoading]               = useState(true)
   const [completions, setCompletions]       = useState<CompletionRow[]>([])
-  const [lessonEvents, setLessonEvents]     = useState<string[]>([])
   const previewRef  = useRef<PortfolioPreview | null>(null)
   const cacheKeyRef = useRef<string | null>(null)
 
@@ -86,16 +85,14 @@ export default function DashboardPage() {
       const cachedTotal = localStorage.getItem(cacheKey)
       if (cachedTotal !== null) setPortfolioTotal(parseFloat(cachedTotal))
 
-      const [{ data: profileData }, { data: portfolioData }, { data: completionData }, { data: habitData }] = await Promise.all([
+      const [{ data: profileData }, { data: portfolioData }, { data: completionData }] = await Promise.all([
         supabase.from('profiles').select('*').eq('id', session.user.id).single(),
         supabase.from('virtual_portfolios').select('id, cash_balance').eq('user_id', session.user.id).maybeSingle(),
         supabase.from('lesson_completions').select('lesson_slug, course_slug, completed_at'),
-        supabase.from('user_habits').select('occurred_at').eq('event_type', 'lesson_finish'),
       ])
 
       setProfile(profileData)
       setCompletions(completionData ?? [])
-      setLessonEvents((habitData ?? []).map(h => h.occurred_at as string))
 
       if (portfolioData) {
         setHasPortfolio(true)
@@ -135,6 +132,8 @@ export default function DashboardPage() {
     init()
 
     return () => subscription.unsubscribe()
+    // saveAndSet is stable; keeping this array unchanged avoids Fast Refresh dependency-size errors.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router])
 
   useEffect(() => {
@@ -151,24 +150,10 @@ export default function DashboardPage() {
   const firstName  = profile?.first_name ?? 'there'
   const totalXp    = profile?.total_xp ?? 0
   const levelInfo  = computeLevel(totalXp)
-  const streak     = computeStreak(lessonEvents)
-
-  const weekDays = (() => {
-    const now = new Date()
-    const dow = now.getDay()
-    const monday = new Date(now)
-    monday.setDate(now.getDate() - (dow === 0 ? 6 : dow - 1))
-    monday.setHours(0, 0, 0, 0)
-    const eventDateSet = new Set(
-      lessonEvents.map(iso => new Date(iso).toLocaleDateString('sv-SE', { timeZone: 'Europe/London' }))
-    )
-    return Array.from({ length: 7 }, (_, i) => {
-      const d = new Date(monday)
-      d.setDate(monday.getDate() + i)
-      const key = d.toLocaleDateString('sv-SE', { timeZone: 'Europe/London' })
-      return { done: eventDateSet.has(key), future: d > now }
-    })
-  })()
+  const lessonDates = completions.map(c => c.completed_at)
+  const streak     = computeStreak(lessonDates)
+  const weekDays   = computeWeekDays(lessonDates)
+  const weeklyXp   = countEventsThisWeek(lessonDates) * XP.LESSON_COMPLETE
 
   const ifsCompletedSlugs = new Set(
     completions.filter(c => c.course_slug === IFS_SLUG).map(c => c.lesson_slug)
@@ -200,6 +185,7 @@ export default function DashboardPage() {
           totalLessonsDone={completions.length}
           streak={streak}
           totalXp={totalXp}
+          weeklyXp={weeklyXp}
           level={levelInfo.level}
           levelTitle={levelInfo.title}
           nextLevelXp={levelInfo.nextLevelXp}
