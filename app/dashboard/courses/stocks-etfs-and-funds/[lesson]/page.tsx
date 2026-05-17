@@ -104,7 +104,7 @@ export default function LessonPage() {
     const { data: profileData } = await supabase.from('profiles').select('total_xp').eq('id', session.user.id).single()
     const prevXp = profileData?.total_xp ?? 0
     await supabase.from('lesson_completions').upsert(
-      { user_id: session.user.id, course_slug: COURSE_SLUG, lesson_slug: slug },
+      { user_id: session.user.id, course_slug: COURSE_SLUG, lesson_slug: slug, completed_at: new Date().toISOString() },
       { onConflict: 'user_id,course_slug,lesson_slug' }
     )
     await handleAwardXp('lesson_complete', `${COURSE_SLUG}:${slug}`, XP.LESSON_COMPLETE, prevXp)

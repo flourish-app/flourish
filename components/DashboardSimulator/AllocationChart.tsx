@@ -103,8 +103,8 @@ export default function AllocationChart({ pieData, totalValue }: Props) {
                     nameKey="name"
                     cx="50%"
                     cy="50%"
-                    innerRadius={54}
-                    outerRadius={86}
+                    innerRadius={40}
+                    outerRadius={64}
                     paddingAngle={2}
                   >
                     {pieData.map((entry, i) => (

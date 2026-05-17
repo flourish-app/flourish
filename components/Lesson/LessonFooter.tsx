@@ -32,19 +32,20 @@ export default function LessonFooter({
       </div>
 
       <div className="lesson-complete-cta">
-        {isCompleted ? (
+        {isCompleted && (
           <div className="lesson-complete-cta__done">
             ✓ You&apos;ve completed this lesson
           </div>
-        ) : (
-          <button
-            className="lesson-complete-cta__btn btn btn--primary btn--lg"
-            onClick={onMarkComplete}
-            disabled={completing}
-          >
-            {completing ? 'Saving...' : hasNext ? 'Mark as complete & next lesson →' : 'Complete course →'}
-          </button>
         )}
+        <button
+          className="lesson-complete-cta__btn btn btn--primary btn--lg"
+          onClick={onMarkComplete}
+          disabled={completing}
+        >
+          {completing ? 'Saving...' : isCompleted
+            ? (hasNext ? 'Next lesson →' : 'Course overview →')
+            : (hasNext ? 'Mark as complete & next lesson →' : 'Complete course →')}
+        </button>
       </div>
 
       <div className="lesson-nav">

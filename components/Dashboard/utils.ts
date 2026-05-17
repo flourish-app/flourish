@@ -1,13 +1,11 @@
-import type { CompletionRow } from './types'
-
 function toDateKey(iso: string) {
   return new Date(iso).toLocaleDateString('sv-SE', { timeZone: 'Europe/London' })
 }
 
-export function computeStreak(completions: CompletionRow[]): number {
-  if (completions.length === 0) return 0
+export function computeStreak(eventTimestamps: string[]): number {
+  if (eventTimestamps.length === 0) return 0
 
-  const dateSet = new Set(completions.map(c => toDateKey(c.completed_at)))
+  const dateSet = new Set(eventTimestamps.map(toDateKey))
 
   const todayKey     = toDateKey(new Date().toISOString())
   const yesterdayKey = toDateKey(new Date(Date.now() - 86_400_000).toISOString())

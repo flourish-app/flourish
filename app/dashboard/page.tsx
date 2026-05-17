@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import type { Profile } from '@/lib/supabase'
 import { lessons as ifsLessons } from '@/lib/lessons/investing-from-scratch'
-import { computeLevel } from '@/lib/xp'
+import { computeLevel, XP } from '@/lib/xp'
 import { type PortfolioPreview, type CompletionRow } from '@/components/Dashboard/types'
 import { computeStreak } from '@/components/Dashboard/utils'
 import DashboardHeader       from '@/components/Dashboard/DashboardHeader'
@@ -13,6 +13,7 @@ import ContinueLearningCard  from '@/components/Dashboard/ContinueLearningCard'
 import ProgressStatsCard     from '@/components/Dashboard/ProgressStatsCard'
 import PortfolioPreviewCard  from '@/components/Dashboard/PortfolioPreviewCard'
 import RecommendedCard       from '@/components/Dashboard/RecommendedCard'
+import PathSelector          from '@/components/Dashboard/PathSelector'
 
 const IFS_SLUG  = 'investing-from-scratch'
 const IFS_TOTAL = ifsLessons.length
@@ -44,12 +45,19 @@ export default function DashboardPage() {
   const [portfolioTotal, setPortfolioTotal] = useState<number | null>(null)
   const [loading, setLoading]               = useState(true)
   const [completions, setCompletions]       = useState<CompletionRow[]>([])
-  const previewRef = useRef<PortfolioPreview | null>(null)
+  const [lessonEvents, setLessonEvents]     = useState<string[]>([])
+  const previewRef  = useRef<PortfolioPreview | null>(null)
+  const cacheKeyRef = useRef<string | null>(null)
+
+  const saveAndSet = useCallback((total: number) => {
+    setPortfolioTotal(total)
+    if (cacheKeyRef.current) localStorage.setItem(cacheKeyRef.current, String(total))
+  }, [])
 
   const refreshTotal = useCallback(async () => {
     if (!previewRef.current) return
-    setPortfolioTotal(await computeTotal(previewRef.current))
-  }, [])
+    saveAndSet(await computeTotal(previewRef.current))
+  }, [saveAndSet])
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
@@ -72,26 +80,57 @@ export default function DashboardPage() {
         return
       }
 
-      const [{ data: profileData }, { data: portfolioData }, { data: completionData }] = await Promise.all([
+      // Set up per-user cache key and pre-populate total before any async data loads
+      const cacheKey = `fl_ptotal_${session.user.id}`
+      cacheKeyRef.current = cacheKey
+      const cachedTotal = localStorage.getItem(cacheKey)
+      if (cachedTotal !== null) setPortfolioTotal(parseFloat(cachedTotal))
+
+      const [{ data: profileData }, { data: portfolioData }, { data: completionData }, { data: habitData }] = await Promise.all([
         supabase.from('profiles').select('*').eq('id', session.user.id).single(),
         supabase.from('virtual_portfolios').select('id, cash_balance').eq('user_id', session.user.id).maybeSingle(),
         supabase.from('lesson_completions').select('lesson_slug, course_slug, completed_at'),
+        supabase.from('user_habits').select('occurred_at').eq('event_type', 'lesson_finish'),
       ])
 
       setProfile(profileData)
       setCompletions(completionData ?? [])
+      setLessonEvents((habitData ?? []).map(h => h.occurred_at as string))
 
       if (portfolioData) {
         setHasPortfolio(true)
         const { data: holdingRows } = await supabase
-          .from('holdings').select('ticker').eq('portfolio_id', portfolioData.id)
+          .from('holdings').select('ticker, shares').eq('portfolio_id', portfolioData.id)
         const tickers = (holdingRows ?? []).map(h => h.ticker)
         const preview: PortfolioPreview = { id: portfolioData.id, cash_balance: portfolioData.cash_balance, tickers }
         previewRef.current = preview
-        setPortfolioTotal(await computeTotal(preview))
+
+        if (tickers.length === 0) {
+          saveAndSet(portfolioData.cash_balance)
+        } else {
+          // Compute total from cached stock_prices before showing the page.
+          // This is a fast DB read; if the cache is warm the total is correct immediately.
+          const { data: prices } = await supabase
+            .from('stock_prices').select('ticker, price').in('ticker', tickers)
+          if (prices && prices.length > 0) {
+            const priceMap = Object.fromEntries(prices.map(p => [p.ticker, p.price as number]))
+            saveAndSet(
+              portfolioData.cash_balance +
+              (holdingRows ?? []).reduce((sum, h) => sum + h.shares * (priceMap[h.ticker] ?? 0), 0)
+            )
+          }
+          // else: localStorage value already set above, or stays null (£—) on first ever load
+        }
       }
 
       setLoading(false)
+
+      // Refresh via edge function in background; keeps stock_prices warm and updates the total
+      if (previewRef.current && previewRef.current.tickers.length > 0) {
+        const preview = previewRef.current
+        await supabase.functions.invoke('get-prices', { body: { tickers: preview.tickers } })
+        saveAndSet(await computeTotal(preview))
+      }
     }
     init()
 
@@ -112,7 +151,24 @@ export default function DashboardPage() {
   const firstName  = profile?.first_name ?? 'there'
   const totalXp    = profile?.total_xp ?? 0
   const levelInfo  = computeLevel(totalXp)
-  const streak     = computeStreak(completions)
+  const streak     = computeStreak(lessonEvents)
+
+  const weekDays = (() => {
+    const now = new Date()
+    const dow = now.getDay()
+    const monday = new Date(now)
+    monday.setDate(now.getDate() - (dow === 0 ? 6 : dow - 1))
+    monday.setHours(0, 0, 0, 0)
+    const eventDateSet = new Set(
+      lessonEvents.map(iso => new Date(iso).toLocaleDateString('sv-SE', { timeZone: 'Europe/London' }))
+    )
+    return Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(monday)
+      d.setDate(monday.getDate() + i)
+      const key = d.toLocaleDateString('sv-SE', { timeZone: 'Europe/London' })
+      return { done: eventDateSet.has(key), future: d > now }
+    })
+  })()
 
   const ifsCompletedSlugs = new Set(
     completions.filter(c => c.course_slug === IFS_SLUG).map(c => c.lesson_slug)
@@ -148,13 +204,15 @@ export default function DashboardPage() {
           levelTitle={levelInfo.title}
           nextLevelXp={levelInfo.nextLevelXp}
           progressPct={levelInfo.progressPct}
+          weekDays={weekDays}
         />
         <PortfolioPreviewCard
           portfolioTotal={portfolioTotal}
           hasPortfolio={hasPortfolio}
         />
-        <RecommendedCard />
       </div>
+      <RecommendedCard />
+      <PathSelector />
     </div>
   )
 }

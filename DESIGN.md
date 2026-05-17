@@ -219,7 +219,24 @@ Components are confident and direct. Buttons invite clicking. Cards have presenc
 ### Signature Component: Section Eyebrow
 The Flourish eyebrow pattern (found above every major headline) is Growth Green text, Inter 0.7–0.8rem, weight 700, uppercase, letter-spacing 0.08em. It precedes the headline by 12px margin. This pattern consistently signals "new section, new idea" across both marketing and dashboard surfaces.
 
-## 6. Do's and Don'ts
+## 6. Learning Path & Lesson Reader Patterns
+
+### Path overview page (`.path-overview__*`)
+Editorial layout inside the `.dashboard` container. Header uses: uppercase Inter eyebrow (category, green) + DM Serif Display title (`2.2rem`, Ink Black) + Inter body description + pill tags (`.path-overview__tag`: Border Grey background, Body Grey text, `pill` radius). Separated from course list by a `1.5px` Border Grey bottom border.
+
+### Course block (`.path-course-block`)
+White card, `16px` radius, `1.5px` Border Grey border. Header band (`.path-course-block__header`) uses `--grey-1` (`#f7f6f2`) background — the subtle two-tone contrast creates structure without shadow. Index number (`.path-course-block__index`) is tabular-numeric, oversized (`1.4rem`), muted grey — a quiet ordinal, not a headline.
+
+### Lesson row (`.path-lesson-row`)
+Full-width flex link. Three columns: left-pinned index number (18px, tabular), center content block (`flex: 1; min-width: 0`) with title (Inter 0.875rem weight 500) and 1-line clamped description below, right-pinned metadata stack (time in Muted Grey, XP value in Growth Green weight 600). Hover: `--grey-1` background, title transitions to Growth Green.
+
+### Lesson reader (`.lesson-reader`)
+Distraction-free reading column: `max-width: 680px`, centered, `padding: 48px 32px 80px`. Structure: back link → eyebrow row (course name in Growth Green uppercase / lesson counter in Muted Grey, space-between) → DM Serif Display title (`2.5rem`) → meta strip (time + XP, separated by Border Grey rule) → prose body (Inter `1.05rem`, `line-height 1.8`, section `<h2>`s in DM Serif `1.5rem`) → full-width green complete button.
+
+### Complete button (`.lesson-reader__complete-btn`)
+Full-width, Growth Green background, `18px 32px` padding, `10px` radius. On click: transitions to disabled/done state (grey), fires a pill toast at bottom-centre (`lesson-toast`), then navigates to the next lesson via `router.push`. The toast uses `toastIn` keyframe (`translateY(12px) → 0` with opacity fade). Done state text: "✓ Lesson Complete".
+
+## 7. Do's and Don'ts
 
 ### Do:
 - **Do** use DM Serif Display for display, headline, title, quote, and display number contexts only. Inter handles everything else.

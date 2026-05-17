@@ -10,8 +10,8 @@ export default function HomeHero() {
         <div className="hero__left">
           <div className="hero__portfolio-card">
             <div className="hero__portfolio-label">Portfolio value</div>
-            <div className="hero__portfolio-value">£9,995.10</div>
-            <div className="hero__portfolio-change">▲ £13.27 (0.13%) today</div>
+            <div className="hero__portfolio-value">£12,755</div>
+            <div className="hero__portfolio-change">▲ £83.12 (0.65%) today</div>
             <div className="hero__portfolio-chart">
               <svg viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
                 <defs>
@@ -50,7 +50,7 @@ export default function HomeHero() {
             Investing skills <em>schools</em> forgot to teach you
           </h1>
           <p className="hero__sub">
-            Learn ISAs, ETFs, index funds and more through bite-sized lessons, live simulations and real tools – completely free.
+            Learn ISAs, ETFs, index funds and more through personalised bite-sized lessons, live simulations and real tools – completely free.
           </p>
           <div className="hero__cta">
             <StartLearningCTA className="btn btn--primary btn--lg" />
@@ -63,7 +63,7 @@ export default function HomeHero() {
               <span className="hero__avatar hero__avatar--3">AL</span>
             </div>
             <div className="hero__stars">★★★★★</div>
-            <p className="hero__proof-text">Join 3,000+ students building their financial future</p>
+            <p className="hero__proof-text">Join 1,000+ students building their financial future</p>
           </div>
         </div>
 

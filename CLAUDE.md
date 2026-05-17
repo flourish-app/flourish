@@ -173,6 +173,39 @@ Event catalogue (`HabitMeta`):
 
 Active strategy is `strategySimple` (queries `lesson_completions`, walks `availableCourses` in order, returns first incomplete lesson). Swap to AI strategy by changing one line in `getSuggestedNextStep`. The `strategyAI` stub is commented in the file.
 
+### Learning Paths
+
+**`config/learningPaths.ts` is the single source of truth for all learning path data.**
+
+Types: `Lesson` (`id`, `title`, `description`, `estimatedMinutes`, `xpReward`), `Course` (`id`, `title`, `lessons`), `LearningPath` (`id`, `title`, `description`, `imageUrl`, `category`, `tags`, `modules`, `courses`, `featuredOnDashboard?`).
+
+Helpers: `featuredPaths` (filtered array), `getPathById(id)`, `totalLessonsInPath(path)`, `totalXpInPath(path)`.
+
+Mock data generators `makeLessons(courseId, count)` and `makeCourse(pathId, index, title, lessonCount)` keep fixture data concise. Replace with real content per lesson.
+
+**Routes:**
+
+| Route | File | Notes |
+|---|---|---|
+| `/dashboard/paths/[pathId]` | `app/dashboard/paths/[pathId]/page.tsx` | Server component; editorial path overview with course blocks + lesson rows |
+| `/dashboard/paths/[pathId]/[courseId]/[lessonId]` | `app/dashboard/paths/[pathId]/[courseId]/[lessonId]/page.tsx` | Server component; distraction-free reading view |
+| `/dashboard/paths/[pathId]/[courseId]/[lessonId]/LessonCompleteButton.tsx` | same directory | `'use client'`; fires toast, then `router.push(nextHref)` after 1.8 s |
+
+**`next` lesson resolution** (computed in the server page, passed as `nextHref` prop):
+1. Next lesson in same course → navigate there
+2. Last lesson in course + next course exists → first lesson of next course
+3. Last lesson of path → back to path overview (`/dashboard/paths/[pathId]`)
+
+**`components/Dashboard/PathSelector.tsx`** — server component rendered on the main dashboard page below `dashboard__grid`. Shows `featuredPaths` as horizontal-scroll cards on mobile, 3-column grid on desktop. Key CSS: `.path-selector`, `.ps-card`, `.ps-card__body` (`min-width: 0` required), `.ps-card__footer`.
+
+**CSS classes** (all in `globals.css`):
+- `.path-selector*`, `.ps-card*` — dashboard featured path cards
+- `.path-overview__*` — path detail page header (back nav, editorial header, tags)
+- `.path-course-block*` — course card with `--grey-1` header band
+- `.path-lesson-row` — flex row link; left: `.path-lesson-row__content` (title + desc), right: `.path-lesson-row__meta` (time + XP stacked); hover turns title green
+- `.lesson-reader*` — distraction-free reading view (max-width 680px, centered)
+- `.lesson-toast` — fixed pill toast (bottom-centre, `toastIn` keyframe animation)
+
 ### Dashboard Tools page
 
 `app/dashboard/tools/page.tsx` is a full directory page with:

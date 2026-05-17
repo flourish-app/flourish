@@ -22,7 +22,7 @@ export default function ContinueLearningCard({
   nextLesson, completedCount, totalLessons, pct, allDone, ctaHref, courseSlug,
 }: Props) {
   return (
-    <section className="dashboard-card dashboard-card--featured cl-card">
+    <section className="dashboard-card cl-card">
       <div className="cl-card__header">
         <div className="cl-card__thumb">📈</div>
         <div className="cl-card__head-text">
@@ -94,29 +94,6 @@ export default function ContinueLearningCard({
         </Link>
       )}
 
-      <div className="cl-card__footer">
-        <div className="cl-card__footer-chip">
-          <span className="cl-card__footer-icon cl-card__footer-icon--trophy">🏆</span>
-          <div>
-            <strong>Finish this course to unlock</strong>
-            <span>Investor badge 🛡️</span>
-          </div>
-        </div>
-        <div className="cl-card__footer-chip">
-          <span className="cl-card__footer-icon cl-card__footer-icon--xp">XP</span>
-          <div>
-            <strong>+100 XP</strong>
-            <span>Course completion bonus</span>
-          </div>
-        </div>
-        <div className="cl-card__footer-chip">
-          <span className="cl-card__footer-icon cl-card__footer-icon--arrow">↗</span>
-          <div>
-            <strong>You&apos;re ahead of</strong>
-            <span>72% of learners</span>
-          </div>
-        </div>
-      </div>
     </section>
   )
 }
